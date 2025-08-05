@@ -88,12 +88,35 @@ def reservas_extras():
 def pagamento():
     st.header("💳 Pagamento da Hospedagem")
     st.write(f"Valor da Hospedagem: R${st.session_state.preco_total:.2f}")
-    nome = st.text_input("Nome no cartão")
-    numero = st.text_input("Número do cartão")
-    validade = st.text_input("Validade (MM/AA)")
-    cvv = st.text_input("CVV")
+    
+    # Seleção do método de pagamento
+    metodo_pagamento = st.selectbox("Escolha o método de pagamento", ["Cartão de Crédito", "Débito", "Pix", "Boleto", "Outros"])
+    
+    # Exibe campos específicos conforme o método de pagamento
+    if metodo_pagamento == "Cartão de Crédito":
+        nome = st.text_input("Nome no cartão")
+        numero = st.text_input("Número do cartão")
+        validade = st.text_input("Validade (MM/AA)")
+        cvv = st.text_input("CVV")
+    elif metodo_pagamento == "Débito":
+        nome = st.text_input("Nome no cartão")
+        numero = st.text_input("Número do cartão")
+        validade = st.text_input("Validade (MM/AA)")
+        cvv = st.text_input("CVV")
+    elif metodo_pagamento == "Pix":
+        chave_pix = st.text_input("Chave Pix (Email, CPF, etc.)")
+    elif metodo_pagamento == "Boleto":
+        cpf = st.text_input("CPF para emissão do boleto")
+        st.write("O boleto será gerado após a confirmação.")
+    else:
+        st.text_input("Método de pagamento adicional")
+    
     if st.button("Pagar"):
-        if nome and numero and validade and cvv and st.session_state.preco_total > 0:
+        if metodo_pagamento == "Pix" and chave_pix:
+            st.success("Pagamento via Pix simulado com sucesso!")
+        elif metodo_pagamento == "Boleto" and cpf:
+            st.success("Boleto gerado com sucesso!")
+        elif metodo_pagamento in ["Cartão de Crédito", "Débito"] and nome and numero and validade and cvv and st.session_state.preco_total > 0:
             st.success("Pagamento simulado com sucesso!")
         else:
             st.error("Preencha todos os campos corretamente e confirme a reserva antes de pagar.")
