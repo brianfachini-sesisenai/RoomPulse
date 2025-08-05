@@ -1,9 +1,10 @@
 {
-    "Segunda": "Arroz, feijão, bife",
-    "Terça": "Macarrão, frango",
-    "Quarta": "Feijoada",
-    "Quinta": "Peixe, arroz, purê",
+    "Segunda": "Arroz, Feijão, Bife, Farofa, Salada",
+    "Terça": "Macarrão, Frango, Salada",
+    "Quarta": "Feijoada, Arroz, Farinha, Salada",
+    "Quinta": "Peixe, Arroz, Purê",
     "Sexta": "Lasanha",
     "Sábado": "Churrasco",
-    "Domingo": "Sopa de legumes"
+    "Domingo": "Rodízio Pizza"
+
   }  
