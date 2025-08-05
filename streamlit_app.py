@@ -70,7 +70,7 @@ def reservas_extras():
 # -------- FUNÇÃO DE PAGAMENTO --------
 def pagamento():
     st.header("💳 Pagamento da Hospedagem")
-    preco_hospedagem = st.number_input("Valor da Hospedagem (R$)", min_value=0.0, format="%.2f")
+    preco_total = st.write("Valor da Hospedagem (R$)", min_value=0.0, format="%.2f")
     nome = st.text_input("Nome no cartão")
     numero = st.text_input("Número do cartão")
     validade = st.text_input("Validade (MM/AA)")
@@ -107,3 +107,4 @@ else:
         pagamento()
     elif opcao == "FAQ":
         faq()
+
