@@ -69,8 +69,8 @@ def reservas_extras():
         if noites < 1:
             st.error("A data de saída deve ser posterior à data de entrada.")
             return
-        st.number_input("Data de Entrada", value=data_entrada, disabled=True)
-        st.number_input("Data de Saída", value=data_saida, disabled=True)
+        st.text_input("Data de Entrada", value=str(data_entrada), disabled=True)
+        st.text_input("Data de Saída", value=str(data_saida), disabled=True)
 
         ocupado = st.checkbox("O hotel está lotado?")
         preco_base = 200
@@ -121,3 +121,4 @@ else:
         pagamento()
     elif opcao == "FAQ":
         faq()
+
