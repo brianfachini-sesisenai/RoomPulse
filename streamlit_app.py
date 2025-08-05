@@ -107,18 +107,13 @@ if not st.session_state.authenticated:
     login()
 else:
     st.sidebar.title("Menu")
-    opcao = st.sidebar.radio("Ir para:", ["Cardápio", "Solicitar Limpeza", "Feedback", "Reservas Extras", "Pagamento", "FAQ"])
-
-    if opcao == "Cardápio":
-        cardapio()
-    elif opcao == "Solicitar Limpeza":
-        solicitar_limpeza()
-    elif opcao == "Feedback":
-        feedback()
-    elif opcao == "Reservas Extras":
-        reservas_extras()
-    elif opcao == "Pagamento":
-        pagamento()
-    elif opcao == "FAQ":
-        faq()
-
+    abas = {
+        "Cardápio": cardapio,
+        "Solicitar Limpeza": solicitar_limpeza,
+        "Feedback": feedback,
+        "Reservas Extras": reservas_extras,
+        "Pagamento": pagamento,
+        "FAQ": faq
+    }
+    aba_selecionada = st.sidebar.selectbox("Ir para:", list(abas.keys()))
+    abas[aba_selecionada]()
