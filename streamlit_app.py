@@ -120,12 +120,10 @@ else:
     }
 
     for nome_aba in abas.keys():
-        estilo = "background-color: #e0e0e0; font-weight: bold;" if st.session_state.aba_ativa == nome_aba else ""
-        if st.sidebar.button(nome_aba, key=nome_aba, help=nome_aba):
+        if st.sidebar.button(
+            f"{'👉 ' if st.session_state.aba_ativa == nome_aba else ''}{nome_aba}",
+            key=nome_aba
+        ):
             st.session_state.aba_ativa = nome_aba
-
-        # Aplicar estilo diretamente no botão (com markdown)
-        if st.session_state.aba_ativa == nome_aba:
-            st.sidebar.markdown(f"<div style='{estilo}; padding: 5px 10px; border-radius: 5px;'>{nome_aba}</div>", unsafe_allow_html=True)
 
     abas[st.session_state.aba_ativa]()
