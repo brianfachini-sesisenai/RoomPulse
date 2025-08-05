@@ -1,6 +1,6 @@
 import streamlit as st
 import json
-from datetime import datetime
+from datetime import datetime, timedelta
 
 # -------- CONFIGURAÇÕES BÁSICAS --------
 st.set_page_config(page_title="RoomPulse", page_icon="🛎️", layout="wide")
@@ -61,15 +61,25 @@ def feedback():
 # -------- FUNÇÃO DE RESERVAS EXTRAS --------
 def reservas_extras():
     st.header("📅 Reservar Noites Extras")
-    noites = st.number_input("Quantas noites deseja adicionar?", min_value=1, max_value=10, step=1)
-    ocupado = st.checkbox("O hotel está lotado?")
-    preco_base = 200
-    preco_por_noite = preco_base + 100 if ocupado else preco_base
-    st.session_state.preco_total = preco_por_noite * noites
-    st.write(f"Preço por noite: R${preco_por_noite}")
-    st.write(f"Preço total: R${st.session_state.preco_total}")
-    if st.button("Confirmar Reserva"):
-        st.success("Reserva adicionada com sucesso!")
+
+    periodo = st.date_input("Selecione o período da reserva:", value=(datetime.today(), datetime.today() + timedelta(days=1)))
+    if len(periodo) == 2:
+        data_entrada, data_saida = periodo
+        noites = (data_saida - data_entrada).days
+        if noites < 1:
+            st.error("A data de saída deve ser posterior à data de entrada.")
+            return
+        st.number_input("Data de Entrada", value=data_entrada, disabled=True)
+        st.number_input("Data de Saída", value=data_saida, disabled=True)
+
+        ocupado = st.checkbox("O hotel está lotado?")
+        preco_base = 200
+        preco_por_noite = preco_base + 100 if ocupado else preco_base
+        st.session_state.preco_total = preco_por_noite * noites
+        st.write(f"Preço por noite: R${preco_por_noite}")
+        st.write(f"Preço total: R${st.session_state.preco_total}")
+        if st.button("Confirmar Reserva"):
+            st.success("Reserva adicionada com sucesso!")
 
 # -------- FUNÇÃO DE PAGAMENTO --------
 def pagamento():
