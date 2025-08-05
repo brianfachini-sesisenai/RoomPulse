@@ -59,9 +59,15 @@ def feedback():
     estrelas = st.slider("Avalie sua experiência", 1, 5, key="estrelas_feedback")
     comentario = st.text_area("Comentário", value=st.session_state.get("comentario_feedback", ""), key="comentario_feedback")
 
+    # Exibe o comentário salvo anteriormente, se houver
+    if "comentario_feedback" in st.session_state:
+        st.write("🔄 Último feedback salvo:")
+        st.write("⭐" * st.session_state.estrelas_feedback)
+        st.write(f"Comentário: {st.session_state.comentario_feedback}")
+
     if st.button("Enviar Feedback"):
-        st.session_state.comentario_feedback = comentario
         st.session_state.estrelas_feedback = estrelas
+        st.session_state.comentario_feedback = comentario
         st.success("Feedback enviado com sucesso!")
         st.write("⭐" * estrelas)
         st.write(f"Comentário: {comentario}")
@@ -132,4 +138,5 @@ else:
             st.session_state.aba_ativa = nome_aba
 
     abas[st.session_state.aba_ativa]()
+
 
