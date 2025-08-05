@@ -12,6 +12,9 @@ if "authenticated" not in st.session_state:
 if "preco_total" not in st.session_state:
     st.session_state.preco_total = 0.0
 
+if "aba_selecionada" not in st.session_state:
+    st.session_state.aba_selecionada = "Cardápio"
+
 # -------- FUNÇÃO DE LOGIN SIMPLES --------
 def login():
     st.header("🔐 Login Obrigatório")
@@ -106,7 +109,6 @@ def faq():
 if not st.session_state.authenticated:
     login()
 else:
-    st.sidebar.title("Menu")
     abas = {
         "Cardápio": cardapio,
         "Solicitar Limpeza": solicitar_limpeza,
@@ -115,5 +117,11 @@ else:
         "Pagamento": pagamento,
         "FAQ": faq
     }
-    aba_selecionada = st.sidebar.selectbox("Ir para:", list(abas.keys()))
-    abas[aba_selecionada]()
+
+    cols = st.columns(len(abas))
+    for i, (nome, _) in enumerate(abas.items()):
+        if cols[i].button(nome):
+            st.session_state.aba_selecionada = nome
+
+    st.markdown("---")
+    abas[st.session_state.aba_selecionada]()
