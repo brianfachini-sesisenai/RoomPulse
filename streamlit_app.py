@@ -12,6 +12,9 @@ if "authenticated" not in st.session_state:
 if "preco_total" not in st.session_state:
     st.session_state.preco_total = 0.0
 
+if "aba_ativa" not in st.session_state:
+    st.session_state.aba_ativa = "Cardápio"
+
 # -------- FUNÇÃO DE LOGIN SIMPLES --------
 def login():
     st.header("🔐 Login Obrigatório")
@@ -115,5 +118,14 @@ else:
         "Pagamento": pagamento,
         "FAQ": faq
     }
-    aba_selecionada = st.sidebar.selectbox("Ir para:", list(abas.keys()))
-    abas[aba_selecionada]()
+
+    for nome_aba in abas.keys():
+        estilo = "background-color: #e0e0e0; font-weight: bold;" if st.session_state.aba_ativa == nome_aba else ""
+        if st.sidebar.button(nome_aba, key=nome_aba, help=nome_aba):
+            st.session_state.aba_ativa = nome_aba
+
+        # Aplicar estilo diretamente no botão (com markdown)
+        if st.session_state.aba_ativa == nome_aba:
+            st.sidebar.markdown(f"<div style='{estilo}; padding: 5px 10px; border-radius: 5px;'>{nome_aba}</div>", unsafe_allow_html=True)
+
+    abas[st.session_state.aba_ativa]()
