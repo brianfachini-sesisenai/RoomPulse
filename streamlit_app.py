@@ -5,9 +5,12 @@ from datetime import datetime
 # -------- CONFIGURAÇÕES BÁSICAS --------
 st.set_page_config(page_title="RoomPulse", page_icon="🛎️", layout="wide")
 
-# -------- ESTADO DE AUTENTICAÇÃO --------
+# -------- ESTADO DE AUTENTICAÇÃO E PREÇO --------
 if "authenticated" not in st.session_state:
     st.session_state.authenticated = False
+
+if "preco_total" not in st.session_state:
+    st.session_state.preco_total = 0.0
 
 # -------- FUNÇÃO DE LOGIN SIMPLES --------
 def login():
@@ -61,25 +64,26 @@ def reservas_extras():
     noites = st.number_input("Quantas noites deseja adicionar?", min_value=1, max_value=10, step=1)
     ocupado = st.checkbox("O hotel está lotado?")
     preco_base = 200
-    preco_total = (preco_base + 100 if ocupado else preco_base) * noites
-    st.write(f"Preço por noite: R${preco_base + 100 if ocupado else preco_base}")
-    st.write(f"Preço total: R${preco_total}")
+    preco_por_noite = preco_base + 100 if ocupado else preco_base
+    st.session_state.preco_total = preco_por_noite * noites
+    st.write(f"Preço por noite: R${preco_por_noite}")
+    st.write(f"Preço total: R${st.session_state.preco_total}")
     if st.button("Confirmar Reserva"):
         st.success("Reserva adicionada com sucesso!")
 
 # -------- FUNÇÃO DE PAGAMENTO --------
 def pagamento():
     st.header("💳 Pagamento da Hospedagem")
-    preco_hospedagem = st.write(f"Valor da Hospedagem R${preco_total}", min_value=0.0, format="%.2f")
+    st.write(f"Valor da Hospedagem: R${st.session_state.preco_total:.2f}")
     nome = st.text_input("Nome no cartão")
     numero = st.text_input("Número do cartão")
     validade = st.text_input("Validade (MM/AA)")
     cvv = st.text_input("CVV")
     if st.button("Pagar"):
-        if nome and numero and validade and cvv and preco_hospedagem > 0:
+        if nome and numero and validade and cvv and st.session_state.preco_total > 0:
             st.success("Pagamento simulado com sucesso!")
         else:
-            st.error("Preencha todos os campos corretamente.")
+            st.error("Preencha todos os campos corretamente e confirme a reserva antes de pagar.")
 
 # -------- FUNÇÃO DE FAQ --------
 def faq():
@@ -107,7 +111,3 @@ else:
         pagamento()
     elif opcao == "FAQ":
         faq()
-
-
-
-
