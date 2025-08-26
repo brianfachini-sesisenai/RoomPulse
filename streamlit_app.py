@@ -41,7 +41,7 @@ def cardapio():
         st.write(f"**{dia}:** {refeicao}")
 
 # -------- FUNÇÃO DE LIMPEZA --------
-def solicitar_limpeza():
+def servico_de_quarto():
     st.header("🧼 Solicitar Limpeza de Quarto")
     autorizado = st.radio("Você autoriza a entrada da equipe de limpeza?", ["Sim", "Não"])
     presente = st.radio("Você está no quarto agora?", ["Sim", "Não"])
@@ -66,7 +66,7 @@ def feedback():
         st.write(f"Comentário: {comentario}")
 
 # -------- FUNÇÃO DE RESERVAS EXTRAS --------
-def reservas_extras():
+def reservas():
     st.header("📅 Reservar Noites Extras")
 
     periodo = st.date_input("Selecione o período da reserva:", value=(datetime.today(), datetime.today() + timedelta(days=1)))
@@ -157,13 +157,13 @@ if not st.session_state.authenticated:
 else:
     st.sidebar.title("Menu")
     abas = {
-        "Cardápio         ": cardapio,
-        "Solicitar Limpeza": solicitar_limpeza,
-        "Feedback         ": feedback,
-        "Reservas Extras  ": reservas_extras,
-        "Pagamento        ": pagamento,
-        "FAQ              ": faq,
-        "Informações      ": info 
+        "Cardápio": cardapio,
+        "Room Service": servico_de_quarto,
+        "Feedback": feedback,
+        "Reservas": reservas,
+        "Pagamento": pagamento,
+        "FAQ": faq,
+        "Informações": info 
     }
 
     for nome_aba in abas.keys():
@@ -174,6 +174,7 @@ else:
             st.session_state.aba_ativa = nome_aba
 
     abas[st.session_state.aba_ativa]()
+
 
 
 
