@@ -159,6 +159,15 @@ def faq() -> None:
     st.write("**Como autorizar a limpeza?** → Pelo menu 'Solicitar Limpeza'.")
     st.write("**Posso estender a estadia?** → Sim, pela opção 'Reservas Extras'.")
 
+# -------- FUNÇÃO DE INFO --------
+def info() -> None:
+    """Informações"""
+    st.header("❓ Dúvidas Frequentes")
+    st.write("**Posso mudar o cardápio?** → Sim, entre em contato com a recepção.")
+    st.write("**Como autorizar a limpeza?** → Pelo menu 'Solicitar Limpeza'.")
+    st.write("**Posso estender a estadia?** → Sim, pela opção 'Reservas Extras'.")
+
+
 
 # -------- INTERFACE PRINCIPAL --------
 def main() -> None:
@@ -173,7 +182,8 @@ def main() -> None:
         "Feedback": feedback,
         "Reservas Extras": reservas_extras,
         "Pagamento": pagamento,
-        "FAQ": faq
+        "FAQ": faq,
+        "Info": info
     }
 
     for nome_aba in abas:
@@ -189,3 +199,4 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
+
