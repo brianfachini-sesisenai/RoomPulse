@@ -36,7 +36,7 @@ def cardapio():
         with open("data/menu.json", "r", encoding="utf-8") as f:
             menu_data = json.load(f)
     except:
-        menu_data = {"Segunda": "Arroz, feijão, bife", "Terça": "Macarrão, frango", "Quarta": "Feijoada"}
+        menu_data = {}
     for dia, refeicao in menu_data.items():
         st.write(f"**{dia}:** {refeicao}")
 
@@ -179,6 +179,7 @@ else:
             st.session_state.aba_ativa = nome_aba
 
     abas[st.session_state.aba_ativa]()
+
 
 
 
