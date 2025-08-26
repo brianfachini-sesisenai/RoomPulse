@@ -154,7 +154,7 @@ else:
         "Reservas Extras": reservas_extras,
         "Pagamento": pagamento,
         "FAQ": faq,
-        "Info"; info 
+        "Info": info 
     }
 
     for nome_aba in abas.keys():
@@ -165,3 +165,4 @@ else:
             st.session_state.aba_ativa = nome_aba
 
     abas[st.session_state.aba_ativa]()
+
