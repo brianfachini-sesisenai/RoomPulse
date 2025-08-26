@@ -150,10 +150,11 @@ def faq():
 # -------- FUNÇÃO DE INFO --------
 def info():
     st.header("ℹ️ Informações do Usuário")
-    st.write(f"**Nome:** {st.session_state.get('username', 'Não definido')}")
+    nome = st.session_state.get('username', 'Não definido')
+    st.text_input("**Nome:**", value=nome)
 
     senha = st.session_state.get("password", "Não definida")
-    st.text_input("**Senha:**", value=senha, type="password", disabled=False)
+    st.text_input("**Senha:**", type="password")
     
     st.write("**Gênero:** (Não informado)")
 
@@ -185,6 +186,7 @@ else:
             st.session_state.aba_ativa = nome_aba
 
     abas[st.session_state.aba_ativa]()
+
 
 
 
