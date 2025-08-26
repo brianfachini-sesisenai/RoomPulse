@@ -157,18 +157,19 @@ def faq() -> None:
     st.write("**Posso estender a estadia?** → Sim, pela opção 'Reservas Extras'.")
 
 
-# -------- FUNÇÃO DE CONFIGURAÇÕES --------
-def configuracoes() -> None:
-    st.header("⚙️ Configurações da Conta")
+# -------- FUNÇÃO INFO --------
+def info() -> None:
+    """Mostra informações do usuário logado"""
+    st.header("ℹ️ Informações do Usuário")
     st.write(f"**Usuário:** {st.session_state.username}")
-    st.write(f"**Senha:** {'*' * len(st.session_state.password)}")  # esconde a senha
+    st.write(f"**Senha:** {st.session_state.password}")  # ⚠️ Só para testes (não recomendado em produção)
 
-    if st.button("Sair da Conta"):
+    if st.button("🚪 Sair da Conta"):
         st.session_state.authenticated = False
         st.session_state.username = ""
         st.session_state.password = ""
         st.session_state.aba_ativa = "Cardápio"
-        st.success("Você saiu da conta com sucesso!")
+        st.success("Você saiu da conta!")
 
 
 # -------- INTERFACE PRINCIPAL --------
@@ -185,7 +186,7 @@ def main() -> None:
         "Reservas Extras": reservas_extras,
         "Pagamento": pagamento,
         "FAQ": faq,
-        "⚙️ Configurações": configuracoes
+        "Info": info,   # 👈 nova seção
     }
 
     for nome_aba in abas:
