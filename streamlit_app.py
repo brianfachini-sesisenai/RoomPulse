@@ -23,6 +23,8 @@ def login():
     if st.button("Entrar"):
         if username and password:
             st.session_state.authenticated = True
+            st.session_state.username = username   # 🔹 salva no session_state
+            st.session_state.password = password   # 🔹 salva no session_state
             st.success(f"Bem-vindo, {username}!")
         else:
             st.error("Usuário e senha são obrigatórios.")
@@ -165,6 +167,7 @@ else:
             st.session_state.aba_ativa = nome_aba
 
     abas[st.session_state.aba_ativa]()
+
 
 
 
