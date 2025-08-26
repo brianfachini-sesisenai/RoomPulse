@@ -138,8 +138,8 @@ def faq():
 # -------- FUNÇÃO DE INFO --------
 def info():
     st.header(" Informações ")
-    st.write(f"**Nome:** {username}")
-    st.write(f"**Senha:** {password}")
+    st.write(f"**Nome:**, {username}")
+    st.write(f"**Senha:**, {password}")
     st.write("**Genêro:**")
 
 # -------- INTERFACE PRINCIPAL --------
@@ -154,7 +154,7 @@ else:
         "Reservas Extras": reservas_extras,
         "Pagamento": pagamento,
         "FAQ": faq,
-        "Info": info 
+        "Informações": info 
     }
 
     for nome_aba in abas.keys():
@@ -165,4 +165,5 @@ else:
             st.session_state.aba_ativa = nome_aba
 
     abas[st.session_state.aba_ativa]()
+
 
