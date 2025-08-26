@@ -161,13 +161,9 @@ def faq() -> None:
 
 # -------- FUNÇÃO DE INFO --------
 def info() -> None:
-    """Informações"""
-    st.header("❓ Dúvidas Frequentes")
-    st.write("**Posso mudar o cardápio?** → Sim, entre em contato com a recepção.")
-    st.write("**Como autorizar a limpeza?** → Pelo menu 'Solicitar Limpeza'.")
-    st.write("**Posso estender a estadia?** → Sim, pela opção 'Reservas Extras'.")
-
-
+    """Informacoes"""
+    st.header("Informações")
+    
 
 # -------- INTERFACE PRINCIPAL --------
 def main() -> None:
@@ -199,4 +195,5 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
+
 
