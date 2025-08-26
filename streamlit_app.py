@@ -115,7 +115,7 @@ def pagamento():
         col1, col2, col3 = st.columns([1, 3, 1])  # A coluna central é 3x maior
         
         with col2:
-            st.image("static/qrcode_pix.png", caption="Escaneie o QR Code para pagar via Pix", use_container_width=True)
+            st.image("qrcode_pix.png", caption="Escaneie o QR Code para pagar via Pix", use_container_width=True)
         
     elif metodo_pagamento == "Boleto":
         cpf = st.text_input("CPF para emissão do boleto")
@@ -179,6 +179,7 @@ else:
             st.session_state.aba_ativa = nome_aba
 
     abas[st.session_state.aba_ativa]()
+
 
 
 
