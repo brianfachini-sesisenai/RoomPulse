@@ -1,7 +1,7 @@
 import streamlit as st
 import json
 from datetime import datetime, timedelta
-from typing import Dict, Tuple
+from typing import Dict, Tuple, List
 
 # -------- CONFIGURAÇÕES BÁSICAS --------
 st.set_page_config(page_title="RoomPulse", page_icon="🛎️", layout="wide")
@@ -10,8 +10,6 @@ st.set_page_config(page_title="RoomPulse", page_icon="🛎️", layout="wide")
 st.session_state.setdefault("authenticated", False)
 st.session_state.setdefault("preco_total", 0.0)
 st.session_state.setdefault("aba_ativa", "Cardápio")
-st.session_state.setdefault("username", "")
-st.session_state.setdefault("password", "")
 
 
 # -------- FUNÇÃO DE LOGIN --------
@@ -24,8 +22,6 @@ def login() -> None:
     if st.button("Entrar"):
         if username.strip() and password.strip():
             st.session_state.authenticated = True
-            st.session_state.username = username
-            st.session_state.password = password
             st.success(f"Bem-vindo, {username}!")
         else:
             st.error("Usuário e senha são obrigatórios.")
@@ -164,21 +160,6 @@ def faq() -> None:
     st.write("**Posso estender a estadia?** → Sim, pela opção 'Reservas Extras'.")
 
 
-# -------- FUNÇÃO INFO --------
-def info() -> None:
-    """Mostra informações do usuário logado"""
-    st.header("ℹ️ Informações do Usuário")
-    st.write(f"**Usuário:** {st.session_state.username}")
-    st.write(f"**Senha:** {st.session_state.password}")  # ⚠️ Só para testes (não recomendado em produção)
-
-    if st.button("🚪 Sair da Conta"):
-        st.session_state.authenticated = False
-        st.session_state.username = ""
-        st.session_state.password = ""
-        st.session_state.aba_ativa = "Cardápio"
-        st.success("Você saiu da conta!")
-
-
 # -------- INTERFACE PRINCIPAL --------
 def main() -> None:
     if not st.session_state.authenticated:
@@ -192,8 +173,7 @@ def main() -> None:
         "Feedback": feedback,
         "Reservas Extras": reservas_extras,
         "Pagamento": pagamento,
-        "FAQ": faq,
-        "Info": info,   # 👈 nova aba no final
+        "FAQ": faq
     }
 
     for nome_aba in abas:
