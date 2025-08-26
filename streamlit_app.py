@@ -98,26 +98,33 @@ def pagamento():
         numero = st.text_input("Número do cartão")
         validade = st.text_input("Validade (MM/AA)")
         cvv = st.text_input("CVV")
+        
     elif metodo_pagamento == "Débito":
         nome = st.text_input("Nome no cartão")
         numero = st.text_input("Número do cartão")
         validade = st.text_input("Validade (MM/AA)")
         cvv = st.text_input("CVV")
+        
     elif metodo_pagamento == "Pix":
         chave_pix = st.text_input("Chave Pix (Email, CPF, etc.)")
+        
     elif metodo_pagamento == "Boleto":
         cpf = st.text_input("CPF para emissão do boleto")
         st.write("O boleto será gerado após a confirmação.")
+        
     else:
         st.text_input("Método de pagamento adicional")
     
     if st.button("Pagar"):
         if metodo_pagamento == "Pix" and chave_pix:
             st.success("Pagamento via Pix simulado com sucesso!")
+            
         elif metodo_pagamento == "Boleto" and cpf:
             st.success("Boleto gerado com sucesso!")
+            
         elif metodo_pagamento in ["Cartão de Crédito", "Débito"] and nome and numero and validade and cvv and st.session_state.preco_total > 0:
             st.success("Pagamento simulado com sucesso!")
+            
         else:
             st.error("Preencha todos os campos corretamente e confirme a reserva antes de pagar.")
 
@@ -127,6 +134,13 @@ def faq():
     st.write("**Posso mudar o cardápio?** Sim, entre em contato com a recepção.")
     st.write("**Como autorizar a limpeza?** Pelo menu 'Solicitar Limpeza'.")
     st.write("**Posso estender a estadia?** Sim, pela opção 'Reservas Extras'.")
+
+# -------- FUNÇÃO DE INFO --------
+def info():
+    st.header(" Informações ")
+    st.write(f"**Nome:** {username}")
+    st.write(f"**Senha:** {password}")
+    st.write("**Genêro:**")
 
 # -------- INTERFACE PRINCIPAL --------
 if not st.session_state.authenticated:
@@ -139,7 +153,8 @@ else:
         "Feedback": feedback,
         "Reservas Extras": reservas_extras,
         "Pagamento": pagamento,
-        "FAQ": faq
+        "FAQ": faq,
+        "Info"; info 
     }
 
     for nome_aba in abas.keys():
