@@ -1,7 +1,7 @@
 import streamlit as st
 import json
 from datetime import datetime, timedelta
-from typing import Dict, Tuple, List
+from typing import Dict, Tuple
 
 # -------- CONFIGURAÇÕES BÁSICAS --------
 st.set_page_config(page_title="RoomPulse", page_icon="🛎️", layout="wide")
@@ -38,24 +38,27 @@ def cardapio() -> None:
         menu_data = {
             "Segunda": "Arroz, feijão, bife",
             "Terça": "Macarrão, frango",
-            "Quarta": "Feijoada"
+            "Quarta": "Feijoada",
+            "Quinta": "Peixe assado",
+            "Sexta": "Lasanha",
+            "Sábado": "Pizza",
+            "Domingo": "Churrasco"
         }
 
-    # Quebra os dias em blocos de 3 colunas
     dias = list(menu_data.items())
-    for i in range(0, len(dias), 3):
-        cols = st.columns(3)
-        for col, (dia, refeicao) in zip(cols, dias[i:i+3]):
-            with col:
-                st.markdown(
-                    f"""
-                    <div style="border:1px solid #ddd; border-radius:10px; padding:10px; margin:5px; text-align:center; background-color:#f9f9f9;">
-                        <h4 style="margin-bottom:5px;">{dia}</h4>
-                        <p>{refeicao}</p>
-                    </div>
-                    """,
-                    unsafe_allow_html=True
-                )
+    cols = st.columns(len(dias))  # cria uma coluna para cada dia
+
+    for col, (dia, refeicao) in zip(cols, dias):
+        with col:
+            st.markdown(
+                f"""
+                <div style="border:1px solid #ddd; border-radius:10px; padding:15px; margin:5px; text-align:center; background-color:#f9f9f9; min-height:120px;">
+                    <h4 style="margin-bottom:10px;">{dia}</h4>
+                    <p style="font-size:14px;">{refeicao}</p>
+                </div>
+                """,
+                unsafe_allow_html=True
+            )
 
 
 # -------- FUNÇÃO DE LIMPEZA --------
