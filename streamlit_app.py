@@ -17,7 +17,7 @@ if "aba_ativa" not in st.session_state:
 
 # -------- FUNÇÃO DE LOGIN SIMPLES --------
 def login():
-    st.header("🔐 Login Obrigatório")
+    st.header("🔐 Login")
     username = st.text_input("Usuário")
     password = st.text_input("Senha", type="password")
     if st.button("Entrar"):
@@ -141,10 +141,10 @@ def faq():
 
 # -------- FUNÇÃO DE INFO --------
 def info():
-    st.header("ℹ️ Informações")
+    st.header("ℹ️ Informações do Usuário")
     st.write(f"**Nome:** {st.session_state.get('username', 'Não definido')}")
     st.write(f"**Senha:** {st.session_state.get('password', 'Não definida')}")
-    st.write("**Gênero:** (não informado)")
+    st.write("**Gênero:** (Não informado)")
 
     if st.button("Sair da Conta"):
         st.session_state.authenticated = False
@@ -174,6 +174,7 @@ else:
             st.session_state.aba_ativa = nome_aba
 
     abas[st.session_state.aba_ativa]()
+
 
 
 
