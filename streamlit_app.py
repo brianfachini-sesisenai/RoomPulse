@@ -144,6 +144,11 @@ def info():
     st.write(f"**Senha:** {st.session_state.get('password', 'Não definida')}")
     st.write("**Gênero:** (não informado)")
 
+    if st.button("Sair da Conta"):
+        st.session_state.authenticated = False
+        st.session_state.aba_ativa = "Cardápio"
+        st.success("Você saiu da conta.")
+
 # -------- INTERFACE PRINCIPAL --------
 if not st.session_state.authenticated:
     login()
@@ -167,6 +172,7 @@ else:
             st.session_state.aba_ativa = nome_aba
 
     abas[st.session_state.aba_ativa]()
+
 
 
 
