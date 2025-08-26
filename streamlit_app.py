@@ -112,7 +112,7 @@ def pagamento():
     elif metodo_pagamento == "Pix":
         chave_pix = st.text_input("Chave Pix (Email, CPF, etc.)")
         st.subheader("📷 QR Code para pagamento")
-        col1, col2, col3 = st.columns([3, 3, 3])  # A coluna central é 3x maior
+        col1, col2, col3 = st.columns([4, 3, 4])  # A coluna central é 3x maior
         
         with col2:
             st.image("qrcode_pix.png", caption="Escaneie o QR Code para pagar via Pix", use_container_width=True, width=250)
@@ -179,6 +179,7 @@ else:
             st.session_state.aba_ativa = nome_aba
 
     abas[st.session_state.aba_ativa]()
+
 
 
 
