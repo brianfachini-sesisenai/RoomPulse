@@ -1,7 +1,7 @@
 import streamlit as st
 import json
 from datetime import datetime, timedelta
-from typing import Dict, Tuple
+from typing import Dict, Tuple, List
 
 # -------- CONFIGURAÇÕES BÁSICAS --------
 st.set_page_config(page_title="RoomPulse", page_icon="🛎️", layout="wide")
@@ -10,8 +10,6 @@ st.set_page_config(page_title="RoomPulse", page_icon="🛎️", layout="wide")
 st.session_state.setdefault("authenticated", False)
 st.session_state.setdefault("preco_total", 0.0)
 st.session_state.setdefault("aba_ativa", "Cardápio")
-st.session_state.setdefault("username", "")
-st.session_state.setdefault("password", "")
 
 
 # -------- FUNÇÃO DE LOGIN --------
@@ -24,8 +22,6 @@ def login() -> None:
     if st.button("Entrar"):
         if username.strip() and password.strip():
             st.session_state.authenticated = True
-            st.session_state.username = username
-            st.session_state.password = password
             st.success(f"Bem-vindo, {username}!")
         else:
             st.error("Usuário e senha são obrigatórios.")
@@ -33,6 +29,7 @@ def login() -> None:
 
 # -------- FUNÇÃO DE CARDÁPIO --------
 def cardapio() -> None:
+    """Exibe cardápio semanal a partir de um JSON externo"""
     st.header("🍽️ Refeições da Semana")
     try:
         with open("data/menu.json", "r", encoding="utf-8") as f:
@@ -50,6 +47,7 @@ def cardapio() -> None:
 
 # -------- FUNÇÃO DE LIMPEZA --------
 def solicitar_limpeza() -> None:
+    """Permite solicitar limpeza do quarto"""
     st.header("🧼 Solicitar Limpeza de Quarto")
     autorizado = st.radio("Você autoriza a entrada da equipe de limpeza?", ["Sim", "Não"])
     presente = st.radio("Você está no quarto agora?", ["Sim", "Não"])
@@ -65,6 +63,7 @@ def solicitar_limpeza() -> None:
 
 # -------- FUNÇÃO DE FEEDBACK --------
 def feedback() -> None:
+    """Permite enviar avaliação e comentário"""
     st.header("🗣️ Enviar Feedback")
     estrelas = st.slider("Avalie sua experiência", 1, 5)
     comentario = st.text_area("Comentário")
@@ -78,7 +77,9 @@ def feedback() -> None:
 
 # -------- FUNÇÃO DE RESERVAS EXTRAS --------
 def reservas_extras() -> None:
+    """Permite reservar noites adicionais"""
     st.header("📅 Reservar Noites Extras")
+
     periodo: Tuple[datetime, datetime] = st.date_input(
         "Selecione o período da reserva:",
         value=(datetime.today(), datetime.today() + timedelta(days=1))
@@ -110,6 +111,7 @@ def reservas_extras() -> None:
 
 # -------- FUNÇÃO DE PAGAMENTO --------
 def pagamento() -> None:
+    """Tela de pagamento com múltiplos métodos"""
     st.header("💳 Pagamento da Hospedagem")
     st.write(f"Valor da Hospedagem: **R${st.session_state.preco_total:.2f}**")
 
@@ -151,25 +153,11 @@ def pagamento() -> None:
 
 # -------- FUNÇÃO DE FAQ --------
 def faq() -> None:
+    """Perguntas frequentes"""
     st.header("❓ Dúvidas Frequentes")
     st.write("**Posso mudar o cardápio?** → Sim, entre em contato com a recepção.")
     st.write("**Como autorizar a limpeza?** → Pelo menu 'Solicitar Limpeza'.")
     st.write("**Posso estender a estadia?** → Sim, pela opção 'Reservas Extras'.")
-
-
-# -------- FUNÇÃO INFO --------
-def info() -> None:
-    """Mostra informações do usuário logado"""
-    st.header("ℹ️ Informações do Usuário")
-    st.write(f"**Usuário:** {st.session_state.username}")
-    st.write(f"**Senha:** {st.session_state.password}")  # ⚠️ Só para testes (não recomendado em produção)
-
-    if st.button("🚪 Sair da Conta"):
-        st.session_state.authenticated = False
-        st.session_state.username = ""
-        st.session_state.password = ""
-        st.session_state.aba_ativa = "Cardápio"
-        st.success("Você saiu da conta!")
 
 
 # -------- INTERFACE PRINCIPAL --------
@@ -185,8 +173,7 @@ def main() -> None:
         "Feedback": feedback,
         "Reservas Extras": reservas_extras,
         "Pagamento": pagamento,
-        "FAQ": faq,
-        "Info": info,   # 👈 nova seção
+        "FAQ": faq
     }
 
     for nome_aba in abas:
