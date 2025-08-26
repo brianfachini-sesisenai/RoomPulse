@@ -29,7 +29,7 @@ def login() -> None:
 
 # -------- FUNÇÃO DE CARDÁPIO --------
 def cardapio() -> None:
-    """Exibe cardápio semanal em formato de catálogo"""
+    """Exibe cardápio semanal em formato de catálogo (colunas)"""
     st.header("🍽️ Refeições da Semana")
     try:
         with open("data/menu.json", "r", encoding="utf-8") as f:
@@ -41,12 +41,21 @@ def cardapio() -> None:
             "Quarta": "Feijoada"
         }
 
-    # Exibir em colunas verticais (catálogo)
-    col1, col2 = st.columns([1, 2])  
-    for dia, refeicao in menu_data.items():
-        col1.markdown(f"**{dia}:**")
-        col2.markdown(refeicao)
-        st.divider()  # linha separadora para cada dia
+    # Quebra os dias em blocos de 3 colunas
+    dias = list(menu_data.items())
+    for i in range(0, len(dias), 3):
+        cols = st.columns(3)
+        for col, (dia, refeicao) in zip(cols, dias[i:i+3]):
+            with col:
+                st.markdown(
+                    f"""
+                    <div style="border:1px solid #ddd; border-radius:10px; padding:10px; margin:5px; text-align:center; background-color:#f9f9f9;">
+                        <h4 style="margin-bottom:5px;">{dia}</h4>
+                        <p>{refeicao}</p>
+                    </div>
+                    """,
+                    unsafe_allow_html=True
+                )
 
 
 # -------- FUNÇÃO DE LIMPEZA --------
@@ -193,4 +202,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-
