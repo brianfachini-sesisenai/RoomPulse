@@ -151,7 +151,7 @@ def faq():
 def info():
     st.header("ℹ️ Informações do Usuário")
     st.write(f"**Nome:** {st.session_state.get('username', 'Não definido')}")
-    st.write(f"**Senha:** {st.session_state.get('password', 'Não definida')}")
+    st.write(f"**Senha:** {st.session_state.get('password', 'Não definida')}", type="password)
     st.write("**Gênero:** (Não informado)")
 
     if st.button("Sair da Conta"):
@@ -182,6 +182,7 @@ else:
             st.session_state.aba_ativa = nome_aba
 
     abas[st.session_state.aba_ativa]()
+
 
 
 
