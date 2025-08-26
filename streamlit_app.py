@@ -1,7 +1,7 @@
 import streamlit as st
 import json
 from datetime import datetime, timedelta
-from typing import Dict, Tuple
+from typing import Dict, Tuple, List
 
 # -------- CONFIGURAÇÕES BÁSICAS --------
 st.set_page_config(page_title="RoomPulse", page_icon="🛎️", layout="wide")
@@ -29,7 +29,7 @@ def login() -> None:
 
 # -------- FUNÇÃO DE CARDÁPIO --------
 def cardapio() -> None:
-    """Exibe cardápio semanal em formato de catálogo (colunas)"""
+    """Exibe cardápio semanal a partir de um JSON externo"""
     st.header("🍽️ Refeições da Semana")
     try:
         with open("data/menu.json", "r", encoding="utf-8") as f:
@@ -38,27 +38,11 @@ def cardapio() -> None:
         menu_data = {
             "Segunda": "Arroz, feijão, bife",
             "Terça": "Macarrão, frango",
-            "Quarta": "Feijoada",
-            "Quinta": "Peixe assado",
-            "Sexta": "Lasanha",
-            "Sábado": "Pizza",
-            "Domingo": "Churrasco"
+            "Quarta": "Feijoada"
         }
 
-    dias = list(menu_data.items())
-    cols = st.columns(len(dias))  # cria uma coluna para cada dia
-
-    for col, (dia, refeicao) in zip(cols, dias):
-        with col:
-            st.markdown(
-                f"""
-                <div style="border:1px solid #ddd; border-radius:10px; padding:15px; margin:5px; text-align:center; background-color:#f9f9f9; min-height:120px;">
-                    <h4 style="margin-bottom:10px;">{dia}</h4>
-                    <p style="font-size:14px;">{refeicao}</p>
-                </div>
-                """,
-                unsafe_allow_html=True
-            )
+    for dia, refeicao in menu_data.items():
+        st.write(f"**{dia}:** {refeicao}")
 
 
 # -------- FUNÇÃO DE LIMPEZA --------
