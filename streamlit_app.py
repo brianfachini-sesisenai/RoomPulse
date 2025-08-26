@@ -139,10 +139,10 @@ def faq():
 
 # -------- FUNÇÃO DE INFO --------
 def info():
-    st.header(" Informações ")
-    st.write(f"Nome:, {username}")
-    st.write(f"Senha:, {password}")
-    st.write("Genêro:")
+    st.header("ℹ️ Informações")
+    st.write(f"**Nome:** {st.session_state.get('username', 'Não definido')}")
+    st.write(f"**Senha:** {st.session_state.get('password', 'Não definida')}")
+    st.write("**Gênero:** (não informado)")
 
 # -------- INTERFACE PRINCIPAL --------
 if not st.session_state.authenticated:
@@ -167,6 +167,7 @@ else:
             st.session_state.aba_ativa = nome_aba
 
     abas[st.session_state.aba_ativa]()
+
 
 
 
