@@ -157,13 +157,13 @@ if not st.session_state.authenticated:
 else:
     st.sidebar.title("Menu")
     abas = {
-        "Cardápio": cardapio,
+        "Cardápio         ": cardapio,
         "Solicitar Limpeza": solicitar_limpeza,
-        "Feedback": feedback,
-        "Reservas Extras": reservas_extras,
-        "Pagamento": pagamento,
-        "FAQ": faq,
-        "Informações": info 
+        "Feedback         ": feedback,
+        "Reservas Extras  ": reservas_extras,
+        "Pagamento        ": pagamento,
+        "FAQ              ": faq,
+        "Informações      ": info 
     }
 
     for nome_aba in abas.keys():
@@ -174,6 +174,7 @@ else:
             st.session_state.aba_ativa = nome_aba
 
     abas[st.session_state.aba_ativa]()
+
 
 
 
