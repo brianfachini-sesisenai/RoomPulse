@@ -152,15 +152,8 @@ def info():
     st.header("ℹ️ Informações do Usuário")
     st.write(f"**Nome:** {st.session_state.get('username', 'Não definido')}")
 
-    mostrar_senha = st.checkbox("Mostrar senha")
     senha = st.session_state.get("password", "Não definida")
-    
-    st.text_input(
-        "**Senha:**", 
-        value=senha, 
-        type="default" if mostrar_senha else "password", 
-        disabled=True
-    )
+    st.text_input("**Senha:**", value=senha, type="default" if mostrar_senha else "password", disabled=True)
     
     st.write("**Gênero:** (Não informado)")
 
@@ -192,6 +185,7 @@ else:
             st.session_state.aba_ativa = nome_aba
 
     abas[st.session_state.aba_ativa]()
+
 
 
 
