@@ -135,7 +135,7 @@ def pagamento():
             st.success("Pagamento simulado com sucesso!")
 
         elif st.session_state.preco_total == 0:
-            st.error(f"Sem contas para pagar, seu saldo é de RS:{st.session_state.preco_total:.2f}.")
+            st.error(f"Sem contas para pagar, seu saldo é de RS: {st.session_state.preco_total:.2f}")
             
         else:
             st.error("Preencha todos os campos corretamente e confirme a reserva antes de pagar.")
@@ -182,6 +182,7 @@ else:
             st.session_state.aba_ativa = nome_aba
 
     abas[st.session_state.aba_ativa]()
+
 
 
 
