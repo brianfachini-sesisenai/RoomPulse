@@ -46,7 +46,9 @@ def solicitar_limpeza():
     autorizado = st.radio("Você autoriza a entrada da equipe de limpeza?", ["Sim", "Não"])
     presente = st.radio("Você está no quarto agora?", ["Sim", "Não"])
     if st.button("Enviar Solicitação"):
-        if presente == "Sim":
+        if autorizado == "Não":
+            st.warning("Limpeza não autorizada no momento.")
+        elif presente == "Sim":
             st.warning("A equipe de limpeza não poderá entrar enquanto você estiver no quarto.")
         elif autorizado == "Sim":
             st.success("Solicitação registrada! A equipe de limpeza foi notificada.")
@@ -172,6 +174,7 @@ else:
             st.session_state.aba_ativa = nome_aba
 
     abas[st.session_state.aba_ativa]()
+
 
 
 
