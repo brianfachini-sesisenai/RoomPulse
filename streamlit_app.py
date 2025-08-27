@@ -168,7 +168,7 @@ if not st.session_state.authenticated:
     login()
 else:
     
-    pg = st.navigation(["cardapio, servico_de_quarto, feedback, reservas, pagamento, faq, info])
+    pg = st.navigation([cardapio, servico_de_quarto, feedback, reservas, pagamento, faq, info])
     pg.run()
 
     for nome_aba in abas.keys():
@@ -179,6 +179,7 @@ else:
             st.session_state.aba_ativa = nome_aba
 
     abas[st.session_state.aba_ativa]()
+
 
 
 
