@@ -73,9 +73,9 @@ def feedback():
         if comentario == None:
             st.warning("Você precisa escrever algo!")
         else:
-        st.success("Feedback enviado com sucesso!")
-        st.write("⭐" * estrelas)
-        st.write(f"Comentário: {comentario}")
+            st.success("Feedback enviado com sucesso!")
+            st.write("⭐" * estrelas)
+            st.write(f"Comentário: {comentario}")
 
 # -------- FUNÇÃO DE RESERVAS EXTRAS --------
 def reservas():
@@ -192,6 +192,7 @@ else:
 
     current_page = st.navigation(list(pages.values()), position="sidebar", expanded=True)
     current_page.run()
+
 
 
 
