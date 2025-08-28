@@ -37,8 +37,17 @@ def cardapio():
             menu_data = json.load(f)
     except:
         menu_data = {}
-    for dia, refeicao in menu_data.items():
-        st.write(f"**{dia}:** {refeicao}")
+
+    # Pega os dias e divide em blocos (ex: 3 colunas por linha)
+    dias = list(menu_data.items())
+    num_colunas = 7  # <- você pode mudar para 2, 4 etc.
+
+    for i in range(0, len(dias), num_colunas):
+        cols = st.columns(num_colunas)  # cria 3 colunas
+        for col, (dia, refeicao) in zip(cols, dias[i:i+num_colunas]):
+            with col:
+                st.subheader(dia)
+                st.write(refeicao)
 
 # -------- FUNÇÃO DE LIMPEZA --------
 def servico_de_quarto():
@@ -180,6 +189,7 @@ else:
 
     current_page = st.navigation(list(pages.values()), position="sidebar", expanded=True)
     current_page.run()
+
 
 
 
