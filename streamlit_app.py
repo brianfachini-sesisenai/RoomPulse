@@ -67,6 +67,8 @@ def servico_de_quarto():
 # -------- FUNÇÃO DE FEEDBACK --------
 def feedback():
     st.header("🗣️ Enviar Feedback")
+    st.write("⭐" * estrelas)
+    st.write(f"Comentário: {comentario}")
     estrelas = st.slider("Avalie sua experiência", 1, 5)
     comentario = st.text_area("Comentário")
     if st.button("Enviar Feedback"):
@@ -189,6 +191,7 @@ else:
 
     current_page = st.navigation(list(pages.values()), position="sidebar", expanded=True)
     current_page.run()
+
 
 
 
