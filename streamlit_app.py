@@ -179,13 +179,14 @@ else:
     }
 
     for nome_aba in abas.keys():
-        if st.navigation(
+        if st.sidebar.button(
             f"{'👉 ' if st.session_state.aba_ativa == nome_aba else ''}{nome_aba}",
             key=nome_aba
         ):
             st.session_state.aba_ativa = nome_aba
 
     abas[st.session_state.aba_ativa]()
+
 
 
 
