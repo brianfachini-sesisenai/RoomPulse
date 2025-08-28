@@ -70,6 +70,9 @@ def feedback():
     estrelas = st.slider("Avalie sua experiência", 1, 5)
     comentario = st.text_area("Comentário")
     if st.button("Enviar Feedback"):
+        if comentario == None:
+            st.warning("Você precisa escrever algo!")
+        else:
         st.success("Feedback enviado com sucesso!")
         st.write("⭐" * estrelas)
         st.write(f"Comentário: {comentario}")
@@ -189,6 +192,7 @@ else:
 
     current_page = st.navigation(list(pages.values()), position="sidebar", expanded=True)
     current_page.run()
+
 
 
 
