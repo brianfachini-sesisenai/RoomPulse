@@ -167,43 +167,25 @@ def info():
 if not st.session_state.authenticated:
     login()
 else:
-    
-    pg = st.navigation([cardapio, servico_de_quarto, feedback, reservas, pagamento, faq, info])
-    pg.run()
+    st.sidebar.title("Menu")
+    abas = {
+        "Cardápio": cardapio,
+        "Room Service": servico_de_quarto,
+        "Feedback": feedback,
+        "Reservas": reservas,
+        "Pagamento": pagamento,
+        "FAQ": faq,
+        "Informações": info 
+    }
 
     for nome_aba in abas.keys():
-        if st.sidebar.button(
+        if st.navigation(
             f"{'👉 ' if st.session_state.aba_ativa == nome_aba else ''}{nome_aba}",
             key=nome_aba
         ):
             st.session_state.aba_ativa = nome_aba
 
     abas[st.session_state.aba_ativa]()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
