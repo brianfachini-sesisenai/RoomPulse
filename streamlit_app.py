@@ -167,25 +167,22 @@ def info():
 if not st.session_state.authenticated:
     login()
 else:
-    st.sidebar.title("Menu")
-    abas = {
-        "Cardápio": cardapio,
-        "Room Service": servico_de_quarto,
-        "Feedback": feedback,
-        "Reservas": reservas,
-        "Pagamento": pagamento,
-        "FAQ": faq,
-        "Informações": info 
-    }
+    st.title("Menu")
 
-    for nome_aba in abas.keys():
-        if st.sidebar.button(
-            f"{'👉 ' if st.session_state.aba_ativa == nome_aba else ''}{nome_aba}",
-            key=nome_aba
-        ):
-            st.session_state.aba_ativa = nome_aba
+    # Criando abas de navegação
+    aba = st.navigation([
+        st.Page("🍽️ Cardápio", cardapio),
+        st.Page("🛎️ Room Service", servico_de_quarto),
+        st.Page("💬 Feedback", feedback),
+        st.Page("📅 Reservas", reservas),
+        st.Page("💳 Pagamento", pagamento),
+        st.Page("❓ FAQ", faq),
+        st.Page("ℹ️ Informações", info),
+    ])
 
-    abas[st.session_state.aba_ativa]()
+    # Mostra a aba escolhida
+    aba.run()
+
 
 
 
