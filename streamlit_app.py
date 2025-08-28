@@ -87,7 +87,7 @@ def feedback():
         if comentario.strip() == "":
             st.error("Você precisa escrever algo!")
         else:
-            st.session_state.feedbacks.append({usuario, "estrelas": estrelas, "comentario": comentario})
+            st.session_state.feedbacks.append({usuario}, {"estrelas": estrelas, "comentario": comentario})
             st.success("Feedback enviado com sucesso!")
 
     # mostra todos os feedbacks já enviados
@@ -213,6 +213,7 @@ else:
 
     current_page = st.navigation(list(pages.values()), position="sidebar", expanded=True)
     current_page.run()
+
 
 
 
