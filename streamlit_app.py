@@ -55,7 +55,7 @@ def cardapio():
                         {"".join(f"<li>{item}</li>" for item in refeicoes)}
                     </div>
                     """,
-                    unsafe_allow_html=True
+                    unsafe_allow_html=True """
                 )
 
 # -------- FUNÇÃO DE LIMPEZA --------
@@ -201,6 +201,7 @@ else:
 
     current_page = st.navigation(list(pages.values()), position="sidebar", expanded=True)
     current_page.run()
+
 
 
 
