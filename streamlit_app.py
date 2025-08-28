@@ -46,6 +46,7 @@ def cardapio():
         cols = st.columns(num_colunas)
         for col, (dia, refeicoes) in zip(cols, dias[i:i+num_colunas]):
             with col:
+                border_style = "border-right: 2px solid #ccc; padding-right: 10px;" if idx < num_colunas-1 else ""
                 st.subheader(dia)
                 if isinstance(refeicoes, list):
                     for item in refeicoes:
@@ -196,6 +197,7 @@ else:
 
     current_page = st.navigation(list(pages.values()), position="sidebar", expanded=True)
     current_page.run()
+
 
 
 
