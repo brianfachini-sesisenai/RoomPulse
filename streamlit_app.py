@@ -88,15 +88,19 @@ def feedback():
         if comentario.strip() == "":
             st.error("Você precisa escrever algo!")
         else:
-            st.session_state.feedbacks.append({"nome": nome, "estrelas": estrelas, "comentario": comentario})
+            novo = {"nome": nome, "estrelas": estrelas, "comentario": comentario}
+            feedbacks.append(novo)
+            with open(arquivo, "w", encoding="utf-8") as f:
+                json.dump(feedbacks, f, ensure_ascii=False, indent=4)
             st.success("Feedback enviado com sucesso!")
 
-    # mostra todos os feedbacks já enviados
-    if st.session_state.feedbacks:
+    # mostra todos os feedbacks salvos
+    if feedbacks:
         st.subheader("📌 Feedbacks enviados")
-        for fb in st.session_state.feedbacks:
-            st.write("⭐" * fb["estrelas"])
-            st.write(f"Comentário: {fb['comentario']}")
+        for fb in feedbacks:
+            st.markdown(f"**👤 {fb['nome']}**")  
+            st.markdown(f"<span style='font-size:14px;'>⭐ {fb['estrelas']} / 5</span>", unsafe_allow_html=True)
+            st.markdown(f"<span style='font-size:14px;'>{fb['comentario']}</span>", unsafe_allow_html=True)
             st.divider()
 
 # -------- FUNÇÃO DE RESERVAS EXTRAS --------
@@ -214,6 +218,7 @@ else:
 
     current_page = st.navigation(list(pages.values()), position="sidebar", expanded=True)
     current_page.run()
+
 
 
 
