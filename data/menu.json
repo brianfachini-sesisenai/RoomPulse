@@ -1,5 +1,5 @@
 {
-    "Segunda": "Arroz, Feijão, Bife, Farofa, Salada",
+    "Segunda": "Arroz \nFeijão \nBife \nFarofa \nSalada",
     "Terça": "Macarrão, Frango, Salada",
     "Quarta": "Feijoada, Arroz, Farinha, Salada",
     "Quinta": "Peixe, Arroz, Purê",
@@ -7,4 +7,5 @@
     "Sábado": "Churrasco",
     "Domingo": "Rodízio Pizza"
   }  
+
 
