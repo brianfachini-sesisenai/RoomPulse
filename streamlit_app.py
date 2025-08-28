@@ -75,15 +75,28 @@ def servico_de_quarto():
 # -------- FUNÇÃO DE FEEDBACK --------
 def feedback():
     st.header("🗣️ Enviar Feedback")
-    estrelas = st.slider("Avalie sua experiência", 1, 5)
-    comentario = st.text_area("Comentário")
+
+    # inicializa lista de feedbacks se ainda não existir
+    if "feedbacks" not in st.session_state:
+        st.session_state.feedbacks = []
+
+    estrelas = st.slider("Avalie sua experiência", 1, 5, key="slider_feedback")
+    comentario = st.text_area("Comentário", key="text_feedback")
+
     if st.button("Enviar Feedback"):
-        if comentario == "":
+        if comentario.strip() == "":
             st.error("Você precisa escrever algo!")
         else:
+            st.session_state.feedbacks.append({"estrelas": estrelas, "comentario": comentario})
             st.success("Feedback enviado com sucesso!")
-            st.write("⭐" * estrelas)
-            st.write(f"Comentário: {comentario}")
+
+    # mostra todos os feedbacks já enviados
+    if st.session_state.feedbacks:
+        st.subheader("📌 Feedbacks enviados")
+        for fb in st.session_state.feedbacks:
+            st.write("⭐" * fb["estrelas"])
+            st.write(f"Comentário: {fb['comentario']}")
+            st.divider()
 
 # -------- FUNÇÃO DE RESERVAS EXTRAS --------
 def reservas():
@@ -200,6 +213,7 @@ else:
 
     current_page = st.navigation(list(pages.values()), position="sidebar", expanded=True)
     current_page.run()
+
 
 
 
