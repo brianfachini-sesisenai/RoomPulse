@@ -168,20 +168,19 @@ if not st.session_state.authenticated:
     login()
 else:
     st.title("Menu")
+    pages = {
+        "Cardápio": st.Page(cardapio, title="Cardápio", icon="🍽️"),
+        "Room Service": st.Page(servico_de_quarto, title="Room Service", icon="🛎️"),
+        "Feedback": st.Page(feedback, title="Feedback", icon="💬"),
+        "Reservas": st.Page(reservas, title="Reservas", icon="📅"),
+        "Pagamento": st.Page(pagamento, title="Pagamento", icon="💳"),
+        "FAQ": st.Page(faq, title="FAQ", icon="❓"),
+        "Informações": st.Page(info, title="Informações", icon="ℹ️")
+    }
 
-    # Criando abas de navegação
-    aba = st.navigation([
-        st.Page("🍽️ Cardápio", cardapio),
-        st.Page("🛎️ Room Service", servico_de_quarto),
-        st.Page("💬 Feedback", feedback),
-        st.Page("📅 Reservas", reservas),
-        st.Page("💳 Pagamento", pagamento),
-        st.Page("❓ FAQ", faq),
-        st.Page("ℹ️ Informações", info),
-    ])
+    current_page = st.navigation(list(pages.values()), position="sidebar", expanded=True)
+    current_page.run()
 
-    # Mostra a aba escolhida
-    aba.run()
 
 
 
