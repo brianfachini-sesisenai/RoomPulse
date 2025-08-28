@@ -36,7 +36,6 @@ def cardapio():
         with open("data/menu.json", "r", encoding="utf-8") as f:
             menu_data = json.load(f)
     except:
-        menu_data = {}
     for dia, refeicao in menu_data.items():
         st.write(f"**{dia}:** {refeicao}")
 
@@ -180,6 +179,7 @@ else:
 
     current_page = st.navigation(list(pages.values()), position="sidebar", expanded=True)
     current_page.run()
+
 
 
 
