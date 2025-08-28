@@ -3,7 +3,7 @@ import json
 from datetime import datetime, timedelta
 
 # -------- CONFIGURAÇÕES BÁSICAS --------
-st.set_page_config(page_title="RoomPulse", page_icon="🛎️", layout="wide")
+st.set_page_config(page_title="Room App", page_icon="🏨", layout="wide")
 
 # -------- ESTADO DE AUTENTICAÇÃO E PREÇO --------
 if "authenticated" not in st.session_state:
@@ -192,6 +192,7 @@ else:
 
     current_page = st.navigation(list(pages.values()), position="sidebar", expanded=True)
     current_page.run()
+
 
 
 
