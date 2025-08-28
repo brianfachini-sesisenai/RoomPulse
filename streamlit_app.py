@@ -43,11 +43,15 @@ def cardapio():
     num_colunas = 7  # <- você pode mudar para 2, 4 etc.
 
     for i in range(0, len(dias), num_colunas):
-        cols = st.columns(num_colunas)  # cria 3 colunas
-        for col, (dia, refeicao) in zip(cols, dias[i:i+num_colunas]):
+        cols = st.columns(num_colunas)
+        for col, (dia, refeicoes) in zip(cols, dias[i:i+num_colunas]):
             with col:
                 st.subheader(dia)
-                st.write(refeicao)
+                if isinstance(refeicoes, list):
+                    for item in refeicoes:
+                        st.markdown(f"- {item}")  # lista com marcadores
+                else:
+                    st.write(refeicoes)  # fallback se for string
 
 # -------- FUNÇÃO DE LIMPEZA --------
 def servico_de_quarto():
@@ -192,6 +196,7 @@ else:
 
     current_page = st.navigation(list(pages.values()), position="sidebar", expanded=True)
     current_page.run()
+
 
 
 
