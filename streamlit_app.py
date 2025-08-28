@@ -48,15 +48,15 @@ def cardapio():
             with col:
                 # aplica estilo com linha à direita (exceto na última coluna)
                 border_style = "border-right: 2px solid #ccc; padding-right: 10px;" if idx < num_colunas-1 else ""
-                st.markdown(
-                    f"""
-                    <div style="{border_style}">
-                        <h4>{dia}</h4>
-                        {"".join(f"<li>{item}</li>" for item in refeicoes)}
-                    </div>
-                    "",
-                    unsafe_allow_html=True
-                )
+                lista_html = "".join(f"<li>{item}</li>" for item in refeicoes)
+                bloco_html = """
+                <div style="{border}">
+                    <h4>{dia}</h4>
+                    <ul>
+                        {lista}
+                    </ul>
+                </div>
+                """.format(border=border_style, dia=dia, lista=lista_html)
 # -------- FUNÇÃO DE LIMPEZA --------
 def servico_de_quarto():
     st.header("🧼 Solicitar Limpeza de Quarto")
@@ -200,6 +200,7 @@ else:
 
     current_page = st.navigation(list(pages.values()), position="sidebar", expanded=True)
     current_page.run()
+
 
 
 
