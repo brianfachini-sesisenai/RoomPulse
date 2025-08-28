@@ -49,11 +49,12 @@ def cardapio():
                 # aplica estilo com linha à direita (exceto na última coluna)
                 border_style = "border-right: 2px solid #ccc; padding-right: 10px;" if idx < num_colunas-1 else ""
                 st.markdown(
-                    f"""
+                    f""
                     <div style="{border_style}">
                         <h4>{dia}</h4>
                         {"".join(f"<li>{item}</li>" for item in refeicoes)}
                     </div>
+                    "",
                     unsafe_allow_html=True
                 )
 # -------- FUNÇÃO DE LIMPEZA --------
@@ -199,6 +200,7 @@ else:
 
     current_page = st.navigation(list(pages.values()), position="sidebar", expanded=True)
     current_page.run()
+
 
 
 
