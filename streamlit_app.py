@@ -44,15 +44,19 @@ def cardapio():
 
     for i in range(0, len(dias), num_colunas):
         cols = st.columns(num_colunas)
-        for col, (dia, refeicoes) in zip(cols, dias[i:i+num_colunas]):
+        for idx, (col, (dia, refeicoes)) in enumerate(zip(cols, dias[i:i+num_colunas])):
             with col:
+                # aplica estilo com linha à direita (exceto na última coluna)
                 border_style = "border-right: 2px solid #ccc; padding-right: 10px;" if idx < num_colunas-1 else ""
-                st.subheader(dia)
-                if isinstance(refeicoes, list):
-                    for item in refeicoes:
-                        st.markdown(f"- {item}")  # lista com marcadores
-                else:
-                    st.write(refeicoes)  # fallback se for string
+                st.markdown(
+                    f"""
+                    <div style="{border_style}">
+                        <h4>{dia}</h4>
+                        {"".join(f"<li>{item}</li>" for item in refeicoes)}
+                    </div>
+                    """,
+                    unsafe_allow_html=True
+                )
 
 # -------- FUNÇÃO DE LIMPEZA --------
 def servico_de_quarto():
@@ -197,6 +201,7 @@ else:
 
     current_page = st.navigation(list(pages.values()), position="sidebar", expanded=True)
     current_page.run()
+
 
 
 
