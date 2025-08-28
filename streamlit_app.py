@@ -71,7 +71,7 @@ def feedback():
     comentario = st.text_area("Comentário")
     if st.button("Enviar Feedback"):
         if comentario == "":
-            st.warning("Você precisa escrever algo!")
+            st.error("Você precisa escrever algo!")
         else:
             st.success("Feedback enviado com sucesso!")
             st.write("⭐" * estrelas)
@@ -192,6 +192,7 @@ else:
 
     current_page = st.navigation(list(pages.values()), position="sidebar", expanded=True)
     current_page.run()
+
 
 
 
