@@ -15,6 +15,13 @@ if "preco_total" not in st.session_state:
 if "aba_ativa" not in st.session_state:
     st.session_state.aba_ativa = "Cardápio"
 
+# Se clicou em sair, limpa sessão e recarrega
+if st.session_state.get("logout", False):
+    for key in ["authenticated", "username", "password", "preco_total", "aba_ativa", "logout"]:
+        if key in st.session_state:
+            del st.session_state[key]
+    st.experimental_rerun()
+
 # -------- FUNÇÃO DE LOGIN SIMPLES --------
 def login():
     st.header("🔐 Login")
@@ -213,6 +220,7 @@ else:
 
     current_page = st.navigation(list(pages.values()), position="sidebar", expanded=True)
     current_page.run()
+
 
 
 
