@@ -183,7 +183,6 @@ def faq():
 # -------- FUNÇÃO DE INFO --------
 def info():
     st.header("ℹ️ Informações do Usuário")
-    
     nome = st.session_state.get('username', 'Não definido')
     st.text_input("**Nome:**", value=nome, disabled=True)
 
@@ -192,14 +191,16 @@ def info():
     
     st.write("**Gênero:** (Não informado)")
 
+    if st.button("Sair da Conta"):
+        st.session_state.authenticated = False
+        st.session_state.aba_ativa = "Cardápio"
+        st.success("Você saiu da conta.")
+
 # -------- INTERFACE PRINCIPAL --------
-if not st.session_state.get("authenticated", False):
-    # Usuário não está autenticado → mostra tela de login
+if not st.session_state.authenticated:
     login()
 else:
-    # Usuário autenticado → cria menu e páginas
     st.title("Menu")
-
     pages = {
         "Cardápio": st.Page(cardapio, title="Cardápio", icon="🍽️"),
         "Room Service": st.Page(servico_de_quarto, title="Room Service", icon="🛎️"),
@@ -210,65 +211,8 @@ else:
         "Informações": st.Page(info, title="Informações", icon="ℹ️")
     }
 
-    # botão de logout fora das páginas
-    if st.button("Sair da Conta"):
-        st.session_state.authenticated = False
-        st.session_state.aba_ativa = "Cardápio"
-        st.info("Você saiu da conta.")
-        # não precisa de rerun
-
-    # cria menu lateral só se ainda autenticado
-    if st.session_state.authenticated:
-        current_page = st.navigation(list(pages.values()), position="sidebar", expanded=True)
-        current_page.run()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    current_page = st.navigation(list(pages.values()), position="sidebar", expanded=True)
+    current_page.run()
 
 
 
