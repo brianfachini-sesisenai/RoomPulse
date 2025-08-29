@@ -183,6 +183,7 @@ def faq():
 # -------- FUNÇÃO DE INFO --------
 def info():
     st.header("ℹ️ Informações do Usuário")
+    
     nome = st.session_state.get('username', 'Não definido')
     st.text_input("**Nome:**", value=nome, disabled=True)
 
@@ -191,11 +192,13 @@ def info():
     
     st.write("**Gênero:** (Não informado)")
 
-# -------- FUNÇÃO DE LOGOUT --------
-def logout():
-    st.session_state.authenticated = False
-    st.session_state.aba_ativa = "Cardápio"
-    # aqui NÃO chamamos st.experimental_rerun() dentro da página
+    if st.button("Sair da Conta"):
+        st.session_state.authenticated = False
+        st.session_state.aba_ativa = "Cardápio"
+        st.info("Você saiu da conta. Volte para a tela de login.")
+
+        # apenas retorna, não chama rerun
+        return
 
 # -------- INTERFACE PRINCIPAL --------
 if not st.session_state.authenticated:
@@ -212,14 +215,14 @@ else:
         "Informações": st.Page(info, title="Informações", icon="ℹ️")
     }
 
-    # botão de logout fora da página
-    if st.button("Sair da Conta"):
-        st.session_state.authenticated = False
-        st.session_state.aba_ativa = "Cardápio"
-        st.experimental_rerun()  # 🔹 aqui é seguro
-
     current_page = st.navigation(list(pages.values()), position="sidebar", expanded=True)
-    current_page.run()
+
+    # verifica antes de rodar a página se o usuário ainda está autenticado
+    if st.session_state.authenticated:
+        current_page.run()
+    else:
+        login()
+
 
 
 
