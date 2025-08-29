@@ -192,20 +192,14 @@ def info():
     
     st.write("**Gênero:** (Não informado)")
 
-    if st.button("Sair da Conta"):
-        st.session_state.authenticated = False
-        st.session_state.aba_ativa = "Cardápio"
-        st.info("Você saiu da conta. Volte para a tela de login.")
-
-        # apenas retorna, não chama rerun
-        return
-
 # -------- INTERFACE PRINCIPAL --------
 if not st.session_state.get("authenticated", False):
-    login()  # mostra login
+    # Usuário não está autenticado → mostra tela de login
+    login()
 else:
+    # Usuário autenticado → cria menu e páginas
     st.title("Menu")
-    
+
     pages = {
         "Cardápio": st.Page(cardapio, title="Cardápio", icon="🍽️"),
         "Room Service": st.Page(servico_de_quarto, title="Room Service", icon="🛎️"),
@@ -216,16 +210,18 @@ else:
         "Informações": st.Page(info, title="Informações", icon="ℹ️")
     }
 
-    # botão de logout dentro do sidebar ou da página info
+    # botão de logout fora das páginas
     if st.button("Sair da Conta"):
         st.session_state.authenticated = False
         st.session_state.aba_ativa = "Cardápio"
-        st.info("Você saiu da conta. Volte para a tela de login.")
+        st.info("Você saiu da conta.")
+        # não precisa de rerun
 
-    # só cria menu se ainda autenticado
+    # cria menu lateral só se ainda autenticado
     if st.session_state.authenticated:
         current_page = st.navigation(list(pages.values()), position="sidebar", expanded=True)
         current_page.run()
+
 
 
 
