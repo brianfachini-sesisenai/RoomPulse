@@ -214,6 +214,11 @@ else:
     current_page = st.navigation(list(pages.values()), position="sidebar", expanded=True)
     current_page.run()
 
+# ------ Teste -------
+if st.button("Atualizar página"):
+    st.experimental_rerun()
+
+
 
 
 
