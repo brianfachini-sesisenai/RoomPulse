@@ -15,13 +15,6 @@ if "preco_total" not in st.session_state:
 if "aba_ativa" not in st.session_state:
     st.session_state.aba_ativa = "Cardápio"
 
-# Se clicou em sair, limpa sessão e recarrega
-if st.session_state.get("logout", False):
-    for key in ["authenticated", "username", "password", "preco_total", "aba_ativa", "logout"]:
-        if key in st.session_state:
-            del st.session_state[key]
-    st.experimental_rerun()
-
 # -------- FUNÇÃO DE LOGIN SIMPLES --------
 def login():
     st.header("🔐 Login")
@@ -198,28 +191,48 @@ def info():
     
     st.write("**Gênero:** (Não informado)")
 
-    # -------- BOTÃO DE SAIR --------
-    if st.button("Sair da Conta"):
-        st.session_state.logout = True  # apenas define a flag
-        return  # sai da função sem chamar st.experimental_rerun()
-
 # -------- INTERFACE PRINCIPAL --------
 if not st.session_state.authenticated:
     login()
 else:
-    st.title("Menu")
-    pages = {
-        "Cardápio": st.Page(cardapio, title="Cardápio", icon="🍽️"),
-        "Room Service": st.Page(servico_de_quarto, title="Room Service", icon="🛎️"),
-        "Feedback": st.Page(feedback, title="Feedback", icon="💬"),
-        "Reservas": st.Page(reservas, title="Reservas", icon="📅"),
-        "Pagamento": st.Page(pagamento, title="Pagamento", icon="💳"),
-        "FAQ": st.Page(faq, title="FAQ", icon="❓"),
-        "Informações": st.Page(info, title="Informações", icon="ℹ️")
-    }
+    st.title("🏨 Room App")
 
-    current_page = st.navigation(list(pages.values()), position="sidebar", expanded=True)
-    current_page.run()
+    # Menu lateral
+    menu_opcoes = [
+        "Cardápio",
+        "Room Service",
+        "Feedback",
+        "Reservas",
+        "Pagamento",
+        "FAQ",
+        "Informações"
+    ]
+    escolha = st.sidebar.selectbox("📌 Menu", menu_opcoes)
+
+    # Executa a página correspondente
+    if escolha == "Cardápio":
+        cardapio()
+    elif escolha == "Room Service":
+        servico_de_quarto()
+    elif escolha == "Feedback":
+        feedback()
+    elif escolha == "Reservas":
+        reservas()
+    elif escolha == "Pagamento":
+        pagamento()
+    elif escolha == "FAQ":
+        faq()
+    elif escolha == "Informações":
+        info()
+
+    # Mostra logout em todas as páginas, se quiser
+    st.sidebar.divider()
+    if st.sidebar.button("Sair da Conta"):
+        for key in ["authenticated", "username", "password", "preco_total", "aba_ativa"]:
+            if key in st.session_state:
+                del st.session_state[key]
+        st.experimental_rerun()
+
 
 
 
