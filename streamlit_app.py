@@ -95,7 +95,7 @@ def feedback():
     if st.session_state.feedbacks:
         st.subheader("📌 Feedbacks enviados")
         for fb in st.session_state.feedbacks:
-            st.write("**👤**" fb["**nome**"])
+            st.write("**👤**" fb["nome"])
             st.write("⭐" * fb["estrelas"])
             st.write(f"Comentário: {fb['comentario']}")
             st.divider()
@@ -214,6 +214,7 @@ else:
 
     current_page = st.navigation(list(pages.values()), position="sidebar", expanded=True)
     current_page.run()
+
 
 
 
