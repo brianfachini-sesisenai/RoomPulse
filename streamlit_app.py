@@ -192,15 +192,12 @@ def info():
     st.write("**Gênero:** (Não informado)")
 
     if st.button("Sair da Conta"):
-        logout()
-
-# -------- FUNÇÃO DE LOGOUT --------
-def logout():
-    st.session_state.authenticated = False
-    st.experimental_rerun()  # recarrega a página para voltar ao login
+        st.session_state.authenticated = False
+        st.session_state.aba_ativa = "Cardápio"
+        st.success("Você saiu da conta.")
 
 # -------- INTERFACE PRINCIPAL --------
-if not st.session_state.get("authenticated", False):
+if not st.session_state.authenticated:
     login()
 else:
     st.title("Menu")
@@ -216,6 +213,7 @@ else:
 
     current_page = st.navigation(list(pages.values()), position="sidebar", expanded=True)
     current_page.run()
+
 
 
 
