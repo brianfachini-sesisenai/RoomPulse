@@ -205,19 +205,10 @@ if not st.session_state.get("authenticated", False):
 else:
     st.title("🏨 Room App")
 
-    # Menu lateral
-    menu_opcoes = [
-        "Cardápio",
-        "Room Service",
-        "Feedback",
-        "Reservas",
-        "Pagamento",
-        "FAQ",
-        "Informações"
-    ]
+    menu_opcoes = ["Cardápio", "Room Service", "Feedback", "Reservas", "Pagamento", "FAQ", "Informações"]
     escolha = st.sidebar.selectbox("📌 Menu", menu_opcoes)
 
-    # Executa a página correspondente
+    # Executa a página escolhida
     if escolha == "Cardápio":
         cardapio()
     elif escolha == "Room Service":
@@ -233,10 +224,12 @@ else:
     elif escolha == "Informações":
         info()
 
-    # Botão de logout
+    # Logout seguro
     st.sidebar.divider()
     if st.sidebar.button("Sair da Conta"):
-        st.session_state.logout = True  # apenas define a flag
+        st.session_state.clear()
+        st.stop()
+
 
 
 
