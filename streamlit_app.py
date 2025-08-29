@@ -191,11 +191,11 @@ def info():
     
     st.write("**Gênero:** (Não informado)")
 
-    if st.button("Sair da Conta"):
-        st.session_state.authenticated = False
-        st.session_state.aba_ativa = "Cardápio"
-        st.success("Você saiu da conta.")
-        st.experimental_rerun()  # 🔹 força recarregar o app
+# -------- FUNÇÃO DE LOGOUT --------
+def logout():
+    st.session_state.authenticated = False
+    st.session_state.aba_ativa = "Cardápio"
+    # aqui NÃO chamamos st.experimental_rerun() dentro da página
 
 # -------- INTERFACE PRINCIPAL --------
 if not st.session_state.authenticated:
@@ -212,8 +212,15 @@ else:
         "Informações": st.Page(info, title="Informações", icon="ℹ️")
     }
 
+    # botão de logout fora da página
+    if st.button("Sair da Conta"):
+        st.session_state.authenticated = False
+        st.session_state.aba_ativa = "Cardápio"
+        st.experimental_rerun()  # 🔹 aqui é seguro
+
     current_page = st.navigation(list(pages.values()), position="sidebar", expanded=True)
     current_page.run()
+
 
 
 
