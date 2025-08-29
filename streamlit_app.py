@@ -201,10 +201,11 @@ def info():
         return
 
 # -------- INTERFACE PRINCIPAL --------
-if not st.session_state.authenticated:
-    login()
+if not st.session_state.get("authenticated", False):
+    login()  # mostra login
 else:
     st.title("Menu")
+    
     pages = {
         "Cardápio": st.Page(cardapio, title="Cardápio", icon="🍽️"),
         "Room Service": st.Page(servico_de_quarto, title="Room Service", icon="🛎️"),
@@ -215,13 +216,17 @@ else:
         "Informações": st.Page(info, title="Informações", icon="ℹ️")
     }
 
-    current_page = st.navigation(list(pages.values()), position="sidebar", expanded=True)
+    # botão de logout fora da página, antes do st.navigation
+    if st.button("Sair da Conta"):
+        st.session_state.authenticated = False
+        st.session_state.aba_ativa = "Cardápio"
+        st.experimental_rerun()  # recarrega o app e desaparece o menu
 
-    # verifica antes de rodar a página se o usuário ainda está autenticado
+    # só cria menu se ainda autenticado
     if st.session_state.authenticated:
+        current_page = st.navigation(list(pages.values()), position="sidebar", expanded=True)
         current_page.run()
-    else:
-        login()
+
 
 
 
