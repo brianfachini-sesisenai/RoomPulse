@@ -193,13 +193,8 @@ def info():
 
     # -------- BOTÃO DE SAIR --------
     if st.button("Sair da Conta"):
-        # Remove os dados da sessão
-        for key in ["authenticated", "username", "password", "preco_total", "aba_ativa"]:
-            if key in st.session_state:
-                del st.session_state[key]
-        
-        # Recarrega a página para refletir logout
-        st.experimental_rerun()
+        st.session_state.logout = True  # apenas define a flag
+        return  # sai da função sem chamar st.experimental_rerun()
 
 # -------- INTERFACE PRINCIPAL --------
 if not st.session_state.authenticated:
@@ -218,6 +213,7 @@ else:
 
     current_page = st.navigation(list(pages.values()), position="sidebar", expanded=True)
     current_page.run()
+
 
 
 
