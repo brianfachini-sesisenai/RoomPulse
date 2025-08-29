@@ -195,6 +195,7 @@ def info():
         st.session_state.authenticated = False
         st.session_state.aba_ativa = "Cardápio"
         st.success("Você saiu da conta.")
+        st.experimental_rerun()  # 🔹 força recarregar o app
 
 # -------- INTERFACE PRINCIPAL --------
 if not st.session_state.authenticated:
@@ -213,6 +214,7 @@ else:
 
     current_page = st.navigation(list(pages.values()), position="sidebar", expanded=True)
     current_page.run()
+
 
 
 
