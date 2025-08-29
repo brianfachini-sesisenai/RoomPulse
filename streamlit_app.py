@@ -216,11 +216,11 @@ else:
         "Informações": st.Page(info, title="Informações", icon="ℹ️")
     }
 
-    # botão de logout fora da página, antes do st.navigation
+    # botão de logout dentro do sidebar ou da página info
     if st.button("Sair da Conta"):
         st.session_state.authenticated = False
         st.session_state.aba_ativa = "Cardápio"
-        st.experimental_rerun()  # recarrega o app e desaparece o menu
+        st.info("Você saiu da conta. Volte para a tela de login.")
 
     # só cria menu se ainda autenticado
     if st.session_state.authenticated:
