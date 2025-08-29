@@ -192,7 +192,15 @@ def info():
     st.write("**Gênero:** (Não informado)")
 
 # -------- INTERFACE PRINCIPAL --------
-if not st.session_state.authenticated:
+if st.session_state.get("logout", False):
+    # Limpa dados da sessão
+    for key in ["authenticated", "username", "password", "preco_total", "aba_ativa", "logout"]:
+        if key in st.session_state:
+            del st.session_state[key]
+    st.experimental_rerun()  # Recarrega página após limpar
+
+# -------- INTERFACE PRINCIPAL USANDO SIDEBAR --------
+if not st.session_state.get("authenticated", False):
     login()
 else:
     st.title("🏨 Room App")
@@ -225,13 +233,11 @@ else:
     elif escolha == "Informações":
         info()
 
-    # Mostra logout em todas as páginas, se quiser
+    # Botão de logout
     st.sidebar.divider()
     if st.sidebar.button("Sair da Conta"):
-        for key in ["authenticated", "username", "password", "preco_total", "aba_ativa"]:
-            if key in st.session_state:
-                del st.session_state[key]
-        st.experimental_rerun()
+        st.session_state.logout = True  # apenas define a flag
+
 
 
 
