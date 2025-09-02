@@ -177,7 +177,7 @@ def pagamento():
                     align-items: center; 
                     z-index: 9999;
                 ">
-                    <img src="https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExenpndm11cnZscnoyM2twYnAzcjdhemYyZGdwYnNvOTd3ZHpxenZyYSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/MiQuvA1DIsVqC5JBjC/giphy.gif" width="200">
+                    <img src="https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExdmVid3EwZzJyN2o4NW5hOWhjYzlsbTYybmM1ZWYwam1seHJnb2N3ZyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/18u3OnFPamgVOAcoUr/giphy.gif" width="200">
                 </div>
                 """,
                 unsafe_allow_html=True
@@ -260,6 +260,7 @@ else:
     if st.sidebar.button("Sair da Conta"):
         st.session_state.clear()
         st.stop()
+
 
 
 
