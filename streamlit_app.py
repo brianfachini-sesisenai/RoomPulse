@@ -49,9 +49,9 @@ def login():
         else:
             st.error("Preencha todos os campos!")
 
-    # Botão estilizado como link (não precisa de rerun)
     if st.button("Ainda não tem conta? Cadastre-se aqui", key="link_cadastro"):
         st.session_state.tela = "cadastro"
+    # NÃO chamamos st.experimental_rerun()
 
 # -------- FUNÇÃO DE CADASTRO --------
 def cadastro():
@@ -76,6 +76,9 @@ def cadastro():
             st.success("Cadastro realizado com sucesso!")
             st.session_state.tela = "login"
             st.experimental_rerun()
+
+    if st.button("Voltar ao Login", key="voltar_login"):
+        st.session_state.tela = "login"
 
 # -------- FUNÇÃO DE CARDÁPIO --------
 def cardapio():
@@ -306,6 +309,7 @@ else:
     if st.sidebar.button("Sair da Conta"):
         st.session_state.clear()
         st.stop()
+
 
 
 
