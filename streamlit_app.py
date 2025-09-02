@@ -1,6 +1,7 @@
 import streamlit as st
 import json
 from datetime import datetime, timedelta
+import time
 
 # -------- CONFIGURAÇÕES BÁSICAS --------
 st.set_page_config(page_title="Room App", page_icon="🏨", layout="wide")
@@ -159,23 +160,11 @@ def pagamento():
     
     if st.button("Pagar"):
         if metodo_pagamento == "Pix" and chave_pix and st.session_state.preco_total > 0:
-            gif_placeholder = st.empty()
             
-            # Mostra o GIF centralizado
-            gif_placeholder.markdown(
-                """
-                <div style="text-align:center;">
-                    <img src="https://media.giphy.com/media/111ebonMs90YLu/giphy.gif" width="250">
-                </div>
-                """,
-                unsafe_allow_html=True
-            )
-            
-            # Espera 3 segundos (tempo do gif)
-            time.sleep(3)
-            
-            # Limpa o gif e mostra a mensagem de sucesso
-            gif_placeholder.empty()
+            # Mostra spinner animado durante 3 segundos
+            with st.spinner("💳 Processando pagamento..."):
+                time.sleep(3)  # simula o tempo do processamento
+                
             st.success("Pagamento via Pix simulado com sucesso!")
             
         elif metodo_pagamento == "Boleto" and cpf:
@@ -246,6 +235,7 @@ else:
     if st.sidebar.button("Sair da Conta"):
         st.session_state.clear()
         st.stop()
+
 
 
 
