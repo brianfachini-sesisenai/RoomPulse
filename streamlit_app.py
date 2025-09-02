@@ -50,8 +50,8 @@ def cardapio():
                 lista_html = "".join(f"<li>{item}</li>" for item in refeicoes)
                 bloco_html = (
                     f'<div style="{border_style}">'
-                    f'    <h4>{dia}</h4>'
-                    f'    <ul>'
+                    f'    <h4 style="margin-bottom: 4px; margin-top: 0;">{dia}</h4>'
+                    f'    <ul style="margin-top: 0; padding-left: 16px;">'
                     f'        {lista_html}'
                     f'    </ul>'
                     f'</div>'
@@ -229,6 +229,7 @@ else:
     if st.sidebar.button("Sair da Conta"):
         st.session_state.clear()
         st.stop()
+
 
 
 
