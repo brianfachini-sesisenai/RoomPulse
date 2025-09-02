@@ -45,9 +45,10 @@ def login():
         else:
             st.error("Usuário ou senha incorretos.")
     
-    st.markdown("Ainda não tem conta?")
-    if st.button("Ir para Cadastro", key="botao_ir_cadastro"):
+    # Texto tipo link que altera st.session_state
+    if st.checkbox("Ainda não tem conta? Clique aqui para se cadastrar", key="link_cadastro"):
         st.session_state.tela = "cadastro"
+        st.experimental_rerun()  # força recarregar a página
 
 # -------- FUNÇÃO DE CADASTRO --------
 def cadastro():
@@ -304,6 +305,7 @@ else:
     if st.sidebar.button("Sair da Conta"):
         st.session_state.clear()
         st.stop()
+
 
 
 
