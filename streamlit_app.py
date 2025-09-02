@@ -158,12 +158,27 @@ def pagamento():
     else:
         st.text_input("Método de pagamento adicional")
     
-    if st.button("Pagar"):
+    if st.button("Verificar Pagamento"):
         if metodo_pagamento == "Pix" and chave_pix and st.session_state.preco_total > 0:
             
-            # Mostra spinner animado durante 3 segundos
-            with st.spinner("💳 Processando pagamento..."):
-                time.sleep(3)  # simula o tempo do processamento
+            gif_placeholder = st.empty()
+        
+            # exibe o GIF centralizado
+            gif_placeholder.markdown(
+                """
+                <div style="position:fixed; top:50%; left:50%; transform:translate(-50%, -50%); z-index:9999;">
+                    <img src="https://media.giphy.com/media/111ebonMs90YLu/giphy.gif" width="200">
+                </div>
+                """,
+                unsafe_allow_html=True
+            )
+    
+            # simula tempo de processamento sem travar a UI
+            for i in range(30):  # 30 x 0.1s = 3 segundos
+                time.sleep(0.1)
+            
+            # remove o GIF e mostra a mensagem de sucesso
+            gif_placeholder.empty()
                 
             st.success("Pagamento via Pix simulado com sucesso!")
             
@@ -235,6 +250,7 @@ else:
     if st.sidebar.button("Sair da Conta"):
         st.session_state.clear()
         st.stop()
+
 
 
 
