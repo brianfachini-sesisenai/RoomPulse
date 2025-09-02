@@ -11,10 +11,20 @@ st.set_page_config(page_title="Room App", page_icon="🏨", layout="wide")
 # -------- ARQUIVO DE USUÁRIOS --------
 USUARIOS_FILE = "usuarios.json"
 
-# Cria o arquivo se não existir
-if not os.path.exists(USUARIOS_FILE):
-    with open(USUARIOS_FILE, "w", encoding="utf-8") as f:
-        json.dump({}, f)
+# Função para carregar usuários de forma segura
+def carregar_usuarios():
+    if not os.path.exists(USUARIOS_FILE):
+        with open(USUARIOS_FILE, "w", encoding="utf-8") as f:
+            json.dump({}, f)
+    try:
+        with open(USUARIOS_FILE, "r", encoding="utf-8") as f:
+            usuarios = json.load(f)
+    except json.JSONDecodeError:
+        # Se o arquivo estiver vazio ou corrompido, reset para {}
+        usuarios = {}
+        with open(USUARIOS_FILE, "w", encoding="utf-8") as f:
+            json.dump(usuarios, f)
+    return usuarios
 
 # -------- ESTADO DE SESSÃO --------
 if "authenticated" not in st.session_state:
@@ -36,24 +46,25 @@ def login():
     password = st.text_input("Senha", type="password", key="login_senha")
     
     if st.button("Entrar", key="botao_login"):
-        if username and password:
-            with open(USUARIOS_FILE, "r", encoding="utf-8") as f:
-                usuarios = json.load(f)
-            if username in usuarios and usuarios[username] == password:
-                st.session_state.authenticated = True
-                st.session_state.username = username
-                st.session_state.password = password
-                st.success(f"Bem-vindo, {username}!")
-            else:
-                st.error("Usuário ou senha incorretos.")
-        else:
+        if not username or not password:
             st.error("Preencha todos os campos!")
-
+            return
+        
+        usuarios = carregar_usuarios()
+        
+        if username in usuarios and usuarios[username] == password:
+            st.session_state.authenticated = True
+            st.session_state.username = username
+            st.session_state.password = password
+            st.success(f"Bem-vindo, {username}!")
+        else:
+            st.error("Usuário ou senha incorretos.")
+    
+    # Botão estilizado como link para cadastro
     if st.button("Ainda não tem conta? Cadastre-se aqui", key="link_cadastro"):
         st.session_state.tela = "cadastro"
-    # NÃO chamamos st.experimental_rerun()
 
-# -------- FUNÇÃO DE CADASTRO --------
+# -------- Tela de Cadastro --------
 def cadastro():
     st.header("📝 Cadastro de Usuário")
     novo_usuario = st.text_input("Escolha um nome de usuário", key="cadastro_usuario")
@@ -64,8 +75,7 @@ def cadastro():
             st.error("Preencha todos os campos!")
             return
         
-        with open(USUARIOS_FILE, "r", encoding="utf-8") as f:
-            usuarios = json.load(f)
+        usuarios = carregar_usuarios()
         
         if novo_usuario in usuarios:
             st.error("Usuário já existe! Tente outro.")
@@ -75,8 +85,8 @@ def cadastro():
                 json.dump(usuarios, f, ensure_ascii=False, indent=4)
             st.success("Cadastro realizado com sucesso!")
             st.session_state.tela = "login"
-            st.experimental_rerun()
 
+    # Link para voltar ao login
     if st.button("Voltar ao Login", key="voltar_login"):
         st.session_state.tela = "login"
 
@@ -309,6 +319,7 @@ else:
     if st.sidebar.button("Sair da Conta"):
         st.session_state.clear()
         st.stop()
+
 
 
 
