@@ -3,6 +3,7 @@ import json
 from datetime import datetime, timedelta
 import time
 import base64
+import os
 
 # -------- CONFIGURAÇÕES BÁSICAS --------
 st.set_page_config(page_title="Room App", page_icon="🏨", layout="wide")
@@ -314,6 +315,7 @@ else:
     if st.sidebar.button("Sair da Conta"):
         st.session_state.clear()
         st.stop()
+
 
 
 
