@@ -163,30 +163,30 @@ def pagamento():
             
             gif_placeholder = st.empty()
         
-            with gif_placeholder.container():
-                st.markdown(
-                    """
-                    <div style="
-                        position: fixed; 
-                        top: 0; left: 0; 
-                        width: 100%; height: 100%; 
-                        background-color: rgba(0,0,0,0.6); 
-                        display: flex; 
-                        justify-content: center; 
-                        align-items: center; 
-                        z-index: 9999;
-                    ">
-                    """,
-                    unsafe_allow_html=True
-                )
-                st.image("Aprovado.gif", width=200)  # <- aqui você coloca o nome do seu GIF local
-                st.markdown("</div>", unsafe_allow_html=True)
+            # mostra o GIF local dentro do overlay escuro
+            gif_placeholder.markdown(
+                f"""
+                <div style="
+                    position: fixed; 
+                    top: 0; left: 0; 
+                    width: 100%; height: 100%; 
+                    background-color: rgba(0,0,0,0.6); 
+                    display: flex; 
+                    justify-content: center; 
+                    align-items: center; 
+                    z-index: 9999;
+                ">
+                    <img src="pagamento.gif" width="200">
+                </div>
+                """,
+                unsafe_allow_html=True
+            )
     
             # simula tempo de processamento
             for i in range(30):
                 time.sleep(0.1)
     
-            # remove o GIF e overlay
+            # remove o GIF + overlay
             gif_placeholder.empty()
                 
             st.success("Pagamento via Pix simulado com sucesso!")
@@ -259,6 +259,7 @@ else:
     if st.sidebar.button("Sair da Conta"):
         st.session_state.clear()
         st.stop()
+
 
 
 
