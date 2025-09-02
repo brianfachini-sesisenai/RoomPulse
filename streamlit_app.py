@@ -60,13 +60,9 @@ def login():
             st.error("Usuário ou senha incorretos.")
     
     # Link para cadastro
-    st.markdown("👉 Ainda não tem conta? [Cadastre-se aqui](#)", unsafe_allow_html=True)
-    if st.session_state.get("go_cadastro", False):
+    if st.button("Ainda não tem conta? Cadastre-se aqui", key="link_cadastro"):
         st.session_state.tela = "cadastro"
-
-    # Detecta clique no link
-    if st.session_state.tela == "login" and "cadastro" in st.experimental_get_query_params():
-        st.session_state.tela = "cadastro"
+        st.rerun()
 
 # -------- Tela de Cadastro --------
 def cadastro():
@@ -323,6 +319,7 @@ else:
     if st.sidebar.button("Sair da Conta"):
         st.session_state.clear()
         st.stop()
+
 
 
 
