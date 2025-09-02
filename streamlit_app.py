@@ -162,29 +162,32 @@ def pagamento():
     if st.button("Verificar Pagamento"):
         if metodo_pagamento == "Pix" and chave_pix and st.session_state.preco_total > 0:
             
+            # cria placeholder para o GIF + overlay
             gif_placeholder = st.empty()
-        
+            
             gif_placeholder.markdown(
-                f"""
+                """
                 <div style="
                     position: fixed; 
                     top: 0; left: 0; 
                     width: 100%; height: 100%; 
-                    background-color: rgba(0,0,0,0.6);
+                    background-color: rgba(0,0,0,0.6);  /* fundo escuro com transparência */
                     display: flex; 
                     justify-content: center; 
                     align-items: center; 
                     z-index: 9999;
                 ">
-                    <img src="https://drive.google.com/uc?export=download&id=1ZymLGP9ajmIqyUUAz1vSo_Rjov1H_xTl" width="200">
+                    <img src="https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExenpndm11cnZscnoyM2twYnAzcjdhemYyZGdwYnNvOTd3ZHpxenZyYSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/MiQuvA1DIsVqC5JBjC/giphy.gif" width="200">
                 </div>
                 """,
                 unsafe_allow_html=True
             )
     
-            for i in range(30):
+            # simula tempo de processamento sem travar completamente
+            for i in range(30):  # 30 x 0.1s = 3 segundos
                 time.sleep(0.1)
             
+            # remove o GIF e overlay
             gif_placeholder.empty()
                 
             st.success("Pagamento via Pix simulado com sucesso!")
@@ -257,6 +260,7 @@ else:
     if st.sidebar.button("Sair da Conta"):
         st.session_state.clear()
         st.stop()
+
 
 
 
