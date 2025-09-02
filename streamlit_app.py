@@ -176,7 +176,7 @@ def pagamento():
                     align-items: center; 
                     z-index: 9999;
                 ">
-                    <img src="pagamento.gif" width="200">
+                    <img src="Aprovado.gif" width="200">
                 </div>
                 """,
                 unsafe_allow_html=True
@@ -259,6 +259,7 @@ else:
     if st.sidebar.button("Sair da Conta"):
         st.session_state.clear()
         st.stop()
+
 
 
 
