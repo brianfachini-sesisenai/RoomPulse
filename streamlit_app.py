@@ -166,7 +166,16 @@ def pagamento():
             # exibe o GIF centralizado
             gif_placeholder.markdown(
                 """
-                <div style="position:fixed; top:50%; left:50%; transform:translate(-50%, -50%); z-index:9999;">
+                <div style="
+                    position: fixed; 
+                    top: 0; left: 0; 
+                    width: 100%; height: 100%; 
+                    background-color: rgba(0,0,0,0.6);  /* fundo escuro com transparência */
+                    display: flex; 
+                    justify-content: center; 
+                    align-items: center; 
+                    z-index: 9999;
+                ">
                     <img src="https://media.giphy.com/media/111ebonMs90YLu/giphy.gif" width="200">
                 </div>
                 """,
@@ -250,6 +259,7 @@ else:
     if st.sidebar.button("Sair da Conta"):
         st.session_state.clear()
         st.stop()
+
 
 
 
