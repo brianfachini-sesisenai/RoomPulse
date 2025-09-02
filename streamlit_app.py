@@ -2,6 +2,7 @@ import streamlit as st
 import json
 from datetime import datetime, timedelta
 import time
+import base64
 
 # -------- CONFIGURAÇÕES BÁSICAS --------
 st.set_page_config(page_title="Room App", page_icon="🏨", layout="wide")
@@ -163,30 +164,27 @@ def pagamento():
             
             gif_placeholder = st.empty()
         
-            # mostra o GIF local dentro do overlay escuro
             gif_placeholder.markdown(
                 f"""
                 <div style="
                     position: fixed; 
                     top: 0; left: 0; 
                     width: 100%; height: 100%; 
-                    background-color: rgba(0,0,0,0.6); 
+                    background-color: rgba(0,0,0,0.6);
                     display: flex; 
                     justify-content: center; 
                     align-items: center; 
                     z-index: 9999;
                 ">
-                    <img src="Aprovado.gif" width="200">
+                    <img src="https://drive.google.com/uc?export=download&id=1ZymLGP9ajmIqyUUAz1vSo_Rjov1H_xTl" width="200">
                 </div>
                 """,
                 unsafe_allow_html=True
             )
     
-            # simula tempo de processamento
             for i in range(30):
                 time.sleep(0.1)
-    
-            # remove o GIF + overlay
+            
             gif_placeholder.empty()
                 
             st.success("Pagamento via Pix simulado com sucesso!")
@@ -259,6 +257,7 @@ else:
     if st.sidebar.button("Sair da Conta"):
         st.session_state.clear()
         st.stop()
+
 
 
 
