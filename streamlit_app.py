@@ -45,10 +45,18 @@ def login():
         else:
             st.error("Usuário ou senha incorretos.")
     
-    # Texto tipo link que altera st.session_state
-    if st.checkbox("Ainda não tem conta? Clique aqui para se cadastrar", key="link_cadastro"):
+    # Link de texto clicável
+    st.markdown(
+        '<span style="color: blue; text-decoration: underline; cursor: pointer;" '
+        'onclick="window.location.reload();">'  # Trigger reload
+        'Ainda não tem conta? Clique aqui para se cadastrar</span>',
+        unsafe_allow_html=True
+    )
+
+    # Outra abordagem, usando checkbox invisível ou link simulando clique
+    if st.checkbox("Ir para Cadastro", key="link_cadastro"):
         st.session_state.tela = "cadastro"
-        st.experimental_rerun()  # força recarregar a página
+        st.experimental_rerun()
 
 # -------- FUNÇÃO DE CADASTRO --------
 def cadastro():
@@ -305,6 +313,7 @@ else:
     if st.sidebar.button("Sair da Conta"):
         st.session_state.clear()
         st.stop()
+
 
 
 
