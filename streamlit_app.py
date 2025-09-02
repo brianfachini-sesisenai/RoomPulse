@@ -17,19 +17,71 @@ if "preco_total" not in st.session_state:
 if "aba_ativa" not in st.session_state:
     st.session_state.aba_ativa = "Cardápio"
 
-# -------- FUNÇÃO DE LOGIN SIMPLES --------
+# -------- FUNÇÃO DE CADASTRO --------
+def cadastro():
+    st.header("📝 Cadastro de Usuário")
+    novo_usuario = st.text_input("Escolha um nome de usuário")
+    nova_senha = st.text_input("Escolha uma senha", type="password")
+    
+    if st.button("Cadastrar"):
+        if not novo_usuario or not nova_senha:
+            st.error("Preencha todos os campos!")
+            return
+        
+        # Carrega usuários existentes
+        if os.path.exists("usuarios.json"):
+            with open("usuarios.json", "r", encoding="utf-8") as f:
+                usuarios = json.load(f)
+        else:
+            usuarios = {}
+        
+        if novo_usuario in usuarios:
+            st.error("Usuário já existe! Tente outro.")
+        else:
+            usuarios[novo_usuario] = nova_senha
+            with open("usuarios.json", "w", encoding="utf-8") as f:
+                json.dump(usuarios, f, ensure_ascii=False, indent=4)
+            st.success("Cadastro realizado com sucesso! Agora faça login.")
+
+# -------- FUNÇÃO DE LOGIN ATUALIZADA --------
 def login():
     st.header("🔐 Login")
     username = st.text_input("Usuário")
     password = st.text_input("Senha", type="password")
+    
     if st.button("Entrar"):
-        if username and password:
+        if not username or not password:
+            st.error("Usuário e senha são obrigatórios.")
+            return
+        
+        # Verifica arquivo de usuários
+        if os.path.exists("usuarios.json"):
+            with open("usuarios.json", "r", encoding="utf-8") as f:
+                usuarios = json.load(f)
+        else:
+            usuarios = {}
+        
+        if username in usuarios and usuarios[username] == password:
             st.session_state.authenticated = True
-            st.session_state.username = username   # 🔹 salva no session_state
-            st.session_state.password = password   # 🔹 salva no session_state
+            st.session_state.username = username
+            st.session_state.password = password
             st.success(f"Bem-vindo, {username}!")
         else:
-            st.error("Usuário e senha são obrigatórios.")
+            st.error("Usuário ou senha incorretos.")
+    
+    # Link para cadastro
+    st.markdown("Ainda não tem conta? [Clique aqui para se cadastrar](#)", unsafe_allow_html=True)
+    if st.button("Ir para Cadastro"):
+        st.session_state.tela = "cadastro"
+
+# -------- NO BLOCO PRINCIPAL --------
+if "tela" not in st.session_state:
+    st.session_state.tela = "login"
+
+if st.session_state.tela == "login":
+    login()
+elif st.session_state.tela == "cadastro":
+    cadastro()
 
 # -------- FUNÇÃO DE CARDÁPIO --------
 def cardapio():
@@ -260,26 +312,6 @@ else:
     if st.sidebar.button("Sair da Conta"):
         st.session_state.clear()
         st.stop()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
