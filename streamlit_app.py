@@ -7,6 +7,14 @@ import base64
 # -------- CONFIGURAÇÕES BÁSICAS --------
 st.set_page_config(page_title="Room App", page_icon="🏨", layout="wide")
 
+# -------- ARQUIVO DE USUÁRIOS --------
+USUARIOS_FILE = "usuarios.json"
+
+# Cria o arquivo se não existir
+if not os.path.exists(USUARIOS_FILE):
+    with open(USUARIOS_FILE, "w", encoding="utf-8") as f:
+        json.dump({}, f)
+
 # -------- ESTADO DE SESSÃO --------
 if "authenticated" not in st.session_state:
     st.session_state.authenticated = False
@@ -31,11 +39,8 @@ def login():
             st.error("Usuário e senha são obrigatórios.")
             return
         
-        if os.path.exists("usuarios.json"):
-            with open("usuarios.json", "r", encoding="utf-8") as f:
-                usuarios = json.load(f)
-        else:
-            usuarios = {}
+        with open(USUARIOS_FILE, "r", encoding="utf-8") as f:
+            usuarios = json.load(f)
         
         if username in usuarios and usuarios[username] == password:
             st.session_state.authenticated = True
@@ -45,16 +50,14 @@ def login():
         else:
             st.error("Usuário ou senha incorretos.")
     
-    # Link de texto clicável
+    # Texto tipo link para cadastro
     st.markdown(
-        '<span style="color: blue; text-decoration: underline; cursor: pointer;" '
-        'onclick="window.location.reload();">'  # Trigger reload
-        'Ainda não tem conta? Clique aqui para se cadastrar</span>',
+        '<p style="color:blue; text-decoration:underline; cursor:pointer;" '
+        'onclick="document.querySelector(\'#link_cadastro\').click()">Ainda não tem conta? Cadastre-se aqui</p>',
         unsafe_allow_html=True
     )
-
-    # Outra abordagem, usando checkbox invisível ou link simulando clique
-    if st.checkbox("Ir para Cadastro", key="link_cadastro"):
+    # Checkbox invisível para capturar clique
+    if st.checkbox("", key="link_cadastro", value=False):
         st.session_state.tela = "cadastro"
         st.experimental_rerun()
 
@@ -69,20 +72,18 @@ def cadastro():
             st.error("Preencha todos os campos!")
             return
         
-        if os.path.exists("usuarios.json"):
-            with open("usuarios.json", "r", encoding="utf-8") as f:
-                usuarios = json.load(f)
-        else:
-            usuarios = {}
+        with open(USUARIOS_FILE, "r", encoding="utf-8") as f:
+            usuarios = json.load(f)
         
         if novo_usuario in usuarios:
             st.error("Usuário já existe! Tente outro.")
         else:
             usuarios[novo_usuario] = nova_senha
-            with open("usuarios.json", "w", encoding="utf-8") as f:
+            with open(USUARIOS_FILE, "w", encoding="utf-8") as f:
                 json.dump(usuarios, f, ensure_ascii=False, indent=4)
             st.success("Cadastro realizado com sucesso!")
             st.session_state.tela = "login"
+            st.experimental_rerun()
 
 # -------- FUNÇÃO DE CARDÁPIO --------
 def cardapio():
@@ -313,6 +314,7 @@ else:
     if st.sidebar.button("Sair da Conta"):
         st.session_state.clear()
         st.stop()
+
 
 
 
