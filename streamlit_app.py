@@ -36,29 +36,21 @@ def login():
     password = st.text_input("Senha", type="password", key="login_senha")
     
     if st.button("Entrar", key="botao_login"):
-        if not username or not password:
-            st.error("Usuário e senha são obrigatórios.")
-            return
-        
-        with open(USUARIOS_FILE, "r", encoding="utf-8") as f:
-            usuarios = json.load(f)
-        
-        if username in usuarios and usuarios[username] == password:
-            st.session_state.authenticated = True
-            st.session_state.username = username
-            st.session_state.password = password
-            st.success(f"Bem-vindo, {username}!")
+        if username and password:
+            with open(USUARIOS_FILE, "r", encoding="utf-8") as f:
+                usuarios = json.load(f)
+            if username in usuarios and usuarios[username] == password:
+                st.session_state.authenticated = True
+                st.session_state.username = username
+                st.session_state.password = password
+                st.success(f"Bem-vindo, {username}!")
+            else:
+                st.error("Usuário ou senha incorretos.")
         else:
-            st.error("Usuário ou senha incorretos.")
-    
-    # Texto tipo link para cadastro
-    st.markdown(
-        '<p style="color:blue; text-decoration:underline; cursor:pointer;" '
-        'onclick="document.querySelector(\'#link_cadastro\').click()">Ainda não tem conta? Cadastre-se aqui</p>',
-        unsafe_allow_html=True
-    )
-    # Checkbox invisível para capturar clique
-    if st.checkbox("", key="link_cadastro", value=False):
+            st.error("Preencha todos os campos!")
+
+    # Botão estilizado como link
+    if st.button("Ainda não tem conta? Cadastre-se aqui", key="link_cadastro"):
         st.session_state.tela = "cadastro"
         st.experimental_rerun()
 
@@ -315,6 +307,7 @@ else:
     if st.sidebar.button("Sair da Conta"):
         st.session_state.clear()
         st.stop()
+
 
 
 
