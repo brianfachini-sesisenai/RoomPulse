@@ -179,7 +179,7 @@ def pagamento():
                     """,
                     unsafe_allow_html=True
                 )
-                st.image("pagamento.gif", width=200)  # <- aqui você coloca o nome do seu GIF local
+                st.image("Aprovado.gif", width=200)  # <- aqui você coloca o nome do seu GIF local
                 st.markdown("</div>", unsafe_allow_html=True)
     
             # simula tempo de processamento
@@ -259,6 +259,7 @@ else:
     if st.sidebar.button("Sair da Conta"):
         st.session_state.clear()
         st.stop()
+
 
 
 
