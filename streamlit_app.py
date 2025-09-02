@@ -60,7 +60,12 @@ def login():
             st.error("Usuário ou senha incorretos.")
     
     # Link para cadastro
-    if st.button("Ainda não tem conta? Cadastre-se aqui", key="link_cadastro"):
+    st.markdown("👉 Ainda não tem conta? [Cadastre-se aqui](#)", unsafe_allow_html=True)
+    if st.session_state.get("go_cadastro", False):
+        st.session_state.tela = "cadastro"
+
+    # Detecta clique no link
+    if st.session_state.tela == "login" and "cadastro" in st.experimental_get_query_params():
         st.session_state.tela = "cadastro"
 
 # -------- Tela de Cadastro --------
@@ -84,25 +89,10 @@ def cadastro():
             st.success("Cadastro realizado com sucesso!")
             st.session_state.tela = "login"
     
-    # Link para voltar ao login
-    if st.button("Voltar ao Login", key="voltar_login"):
+    # Link para voltar
+    st.markdown("🔙 [Voltar ao Login](#)", unsafe_allow_html=True)
+    if st.session_state.tela == "cadastro" and "login" in st.experimental_get_query_params():
         st.session_state.tela = "login"
-
-# -------- Inicializa variáveis de sessão --------
-if "authenticated" not in st.session_state:
-    st.session_state.authenticated = False
-if "tela" not in st.session_state:
-    st.session_state.tela = "login"
-
-# -------- Fluxo principal baseado na tela --------
-if st.session_state.tela == "login":
-    login()
-elif st.session_state.tela == "cadastro":
-    cadastro()
-elif st.session_state.get("authenticated", False):
-    st.title("🏨 Room App")
-    st.write(f"Bem-vindo(a), {st.session_state.username}!")
-    # Aqui você coloca o resto do Room App: Cardápio, Room Service, Feedback, etc.
 
 # -------- FUNÇÃO DE CARDÁPIO --------
 def cardapio():
@@ -333,6 +323,7 @@ else:
     if st.sidebar.button("Sair da Conta"):
         st.session_state.clear()
         st.stop()
+
 
 
 
