@@ -8,6 +8,15 @@ import os
 # -------- CONFIGURAÇÕES BÁSICAS --------
 st.set_page_config(page_title="Room App", page_icon="🏨", layout="wide")
 
+# --- SINCRONIZAÇÃO URL <-> TELA ---
+view = st.query_params.get("view", st.session_state.get("tela", "login"))
+if isinstance(view, list):  # dependendo da versão pode vir lista
+    view = view[0] if view else "login"
+if view not in ("login", "cadastro"):
+    view = "login"
+
+st.session_state.tela = view  # mantém a tela sincronizada
+
 # -------- ARQUIVO DE USUÁRIOS --------
 USUARIOS_FILE = "usuarios.json"
 
@@ -59,10 +68,8 @@ def login():
         else:
             st.error("Usuário ou senha incorretos.")
     
-    # Link para cadastro
-    if st.button("Ainda não tem conta? Cadastre-se aqui", key="link_cadastro"):
-        st.session_state.tela = "cadastro"
-        st.rerun()
+    # Link para cadastro (texto clicável que troca a URL)
+    st.markdown('👉 Ainda não tem conta? <a href="?view=cadastro">Cadastre-se aqui</a>', unsafe_allow_html=True)
 
 # -------- Tela de Cadastro --------
 def cadastro():
@@ -83,12 +90,11 @@ def cadastro():
             with open(USUARIOS_FILE, "w", encoding="utf-8") as f:
                 json.dump(usuarios, f, ensure_ascii=False, indent=4)
             st.success("Cadastro realizado com sucesso!")
+            st.query_params.update(view="login")  # Atualiza a URL para login
             st.session_state.tela = "login"
     
-    # Link para voltar
-    st.markdown("🔙 [Voltar ao Login](#)", unsafe_allow_html=True)
-    if st.session_state.tela == "cadastro" and "login" in st.experimental_get_query_params():
-        st.session_state.tela = "login"
+    # Link para voltar ao login
+    st.markdown('🔙 <a href="?view=login">Voltar ao Login</a>', unsafe_allow_html=True)
 
 # -------- FUNÇÃO DE CARDÁPIO --------
 def cardapio():
@@ -290,9 +296,7 @@ if st.session_state.get("logout", False):
     st.experimental_rerun()  # Recarrega página após limpar
 
 # -------- INTERFACE PRINCIPAL USANDO SIDEBAR --------
-if not st.session_state.get("authenticated", False):
-    login()
-else:
+if st.session_state.get("authenticated", False):
     st.title("🏨 Room App")
 
     menu_opcoes = ["Cardápio", "Room Service", "Feedback", "Reservas", "Pagamento", "FAQ", "Informações"]
@@ -319,6 +323,17 @@ else:
     if st.sidebar.button("Sair da Conta"):
         st.session_state.clear()
         st.stop()
+
+# -------- CONTROLE DE TELAS --------
+if not st.session_state.authenticated:
+    if st.session_state.tela == "login":
+        login()
+    elif st.session_state.tela == "cadastro":
+        cadastro()
+else:
+    st.success(f"✅ Você está logado como {st.session_state.username}")
+    # aqui entra o resto do app (menu, cardápio, etc.)
+
 
 
 
