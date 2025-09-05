@@ -142,16 +142,16 @@ def servico_de_quarto():
 
 # -------- CARTÃO DO QUARTO --------
 def cartao_quarto():
-    st.header("Cartão Do Quarto")
+    st.header("Cartão do Quarto")
     
-    @st.dialog("Cast your vote")
+    @st.dialog("Cartão do Quarto")
     def vote(item):
         st.write(f"Aproxime o cartão da fechadura da porta!")
         if st.button("Voltar"):
             st.rerun()
 
     st.write("Cartão do seu quarto na palma da sua mão!")
-    st.button("Abrir"):
+    if st.button("Abrir"):
         vote(Abrir)
 
 # -------- FUNÇÃO DE FEEDBACK --------
@@ -350,6 +350,7 @@ if not st.session_state.authenticated:
 else:
     st.success(f"✅ Você está logado como {st.session_state.username}")
     # aqui entra o resto do app (menu, cardápio, etc.)
+
 
 
 
