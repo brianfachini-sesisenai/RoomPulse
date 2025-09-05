@@ -150,8 +150,9 @@ def cartao_quarto():
         if st.button("Voltar"):
             st.rerun()
 
-    st.write("Abrir cartão")
-    if st.button("A"):
+    st.write("Cartão do seu quarto na palma da sua mão!")
+    if st.button("Abrir"):
+        vote(item)
 
 # -------- FUNÇÃO DE FEEDBACK --------
 def feedback():
@@ -349,6 +350,7 @@ if not st.session_state.authenticated:
 else:
     st.success(f"✅ Você está logado como {st.session_state.username}")
     # aqui entra o resto do app (menu, cardápio, etc.)
+
 
 
 
