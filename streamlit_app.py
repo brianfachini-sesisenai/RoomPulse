@@ -124,6 +124,7 @@ def cardapio():
                     f'</div>'
                 )
                 st.markdown(bloco_html, unsafe_allow_html=True)
+                
 # -------- FUNÇÃO DE LIMPEZA --------
 def servico_de_quarto():
     st.header("🧼 Solicitar Limpeza de Quarto")
@@ -138,6 +139,16 @@ def servico_de_quarto():
             st.success("Solicitação registrada! A equipe de limpeza foi notificada.")
         else:
             st.info("Limpeza não autorizada no momento.")
+
+# -------- CARTÃO DO QUARTO --------
+def cartao_quarto():
+    st.header("Cartão Do Quarto")
+    st.write("Aproxime o cartão da fechadura para desbloquear a porta do seu quarto!")
+    col1, col2, col3 = st.columns(3)
+
+    with col2:
+        st.image("Cartao_Aproximacao.png")
+    
 
 # -------- FUNÇÃO DE FEEDBACK --------
 def feedback():
@@ -307,6 +318,8 @@ if st.session_state.get("authenticated", False):
         cardapio()
     elif escolha == "Room Service":
         servico_de_quarto()
+    elif escolha == "Cartão Do Quarto":
+        cartao_quarto()
     elif escolha == "Feedback":
         feedback()
     elif escolha == "Reservas":
@@ -333,6 +346,7 @@ if not st.session_state.authenticated:
 else:
     st.success(f"✅ Você está logado como {st.session_state.username}")
     # aqui entra o resto do app (menu, cardápio, etc.)
+
 
 
 
