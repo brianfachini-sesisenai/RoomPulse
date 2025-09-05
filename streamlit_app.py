@@ -143,11 +143,11 @@ def servico_de_quarto():
 # -------- CARTÃO DO QUARTO --------
 def cartao_quarto():
     st.header("Cartão Do Quarto")
-    st.write("Aproxime o cartão da fechadura para desbloquear a porta do seu quarto!")
-    col1, col2, col3 = st.columns(3)
+    col1, col2, col3 = st.columns([1, 4, 1])
 
     with col2:
         st.image("Cartao_Aproximacao.png")
+        st.write("Aproxime o cartão da fechadura para desbloquear a porta do seu quarto!")
     
 
 # -------- FUNÇÃO DE FEEDBACK --------
@@ -346,6 +346,7 @@ if not st.session_state.authenticated:
 else:
     st.success(f"✅ Você está logado como {st.session_state.username}")
     # aqui entra o resto do app (menu, cardápio, etc.)
+
 
 
 
