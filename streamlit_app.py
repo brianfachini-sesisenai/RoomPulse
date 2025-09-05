@@ -147,6 +147,7 @@ def cartao_quarto():
     @st.dialog("Cartão do Quarto")
     def vote(item):
         st.write(f"Aproxime o cartão da fechadura da porta!")
+        st.image("Cartao_Aproximacao.png")
         if st.button("Voltar"):
             st.rerun()
 
@@ -350,25 +351,6 @@ if not st.session_state.authenticated:
 else:
     st.success(f"✅ Você está logado como {st.session_state.username}")
     # aqui entra o resto do app (menu, cardápio, etc.)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
