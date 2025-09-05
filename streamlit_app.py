@@ -310,7 +310,7 @@ if st.session_state.get("logout", False):
 if st.session_state.get("authenticated", False):
     st.title("🏨 Room App")
 
-    menu_opcoes = ["Cardápio", "Room Service", "Feedback", "Reservas", "Pagamento", "FAQ", "Informações"]
+    menu_opcoes = ["Cardápio", "Room Service", "Cartão Do Quarto", "Feedback", "Reservas", "Pagamento", "FAQ", "Informações"]
     escolha = st.sidebar.selectbox("📌 Menu", menu_opcoes)
 
     # Executa a página escolhida
@@ -346,6 +346,7 @@ if not st.session_state.authenticated:
 else:
     st.success(f"✅ Você está logado como {st.session_state.username}")
     # aqui entra o resto do app (menu, cardápio, etc.)
+
 
 
 
