@@ -158,7 +158,6 @@ def cartao_quarto():
             vote("A")
     else:
         f"You voted for {st.session_state.vote['item']} because {st.session_state.vote['reason']}"
-    
 
 # -------- FUNÇÃO DE FEEDBACK --------
 def feedback():
@@ -356,6 +355,7 @@ if not st.session_state.authenticated:
 else:
     st.success(f"✅ Você está logado como {st.session_state.username}")
     # aqui entra o resto do app (menu, cardápio, etc.)
+
 
 
 
