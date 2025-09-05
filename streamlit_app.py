@@ -144,20 +144,20 @@ def servico_de_quarto():
 def cartao_quarto():
     st.header("Cartão Do Quarto")
     
-@st.dialog("Cast your vote")
-def vote(item):
-    st.write(f"Why is {item} your favorite?")
-    reason = st.text_input("Because...")
-    if st.button("Submit"):
-        st.session_state.vote = {"item": item, "reason": reason}
-        st.rerun()
-
-if "vote" not in st.session_state:
-    st.write("Vote for your favorite")
-    if st.button("A"):
-        vote("A")
-else:
-    f"You voted for {st.session_state.vote['item']} because {st.session_state.vote['reason']}"
+    @st.dialog("Cast your vote")
+    def vote(item):
+        st.write(f"Why is {item} your favorite?")
+        reason = st.text_input("Because...")
+        if st.button("Submit"):
+            st.session_state.vote = {"item": item, "reason": reason}
+            st.rerun()
+    
+    if "vote" not in st.session_state:
+        st.write("Vote for your favorite")
+        if st.button("A"):
+            vote("A")
+    else:
+        f"You voted for {st.session_state.vote['item']} because {st.session_state.vote['reason']}"
     
 
 # -------- FUNÇÃO DE FEEDBACK --------
@@ -356,6 +356,7 @@ if not st.session_state.authenticated:
 else:
     st.success(f"✅ Você está logado como {st.session_state.username}")
     # aqui entra o resto do app (menu, cardápio, etc.)
+
 
 
 
