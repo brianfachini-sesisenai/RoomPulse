@@ -248,8 +248,8 @@ def pagamento():
                 st.write(f"Verificando Pagamento")
                 st.image("Pix.gif", width="200")
                 for i in range(30):  # 30 x 0.1s = 3 segundos
-                time.sleep(0.1)
-                    st.rerun()
+                    time.sleep(0.1)
+                st.rerun()
                 
             st.success("Pagamento via Pix simulado com sucesso!")
             
@@ -331,6 +331,7 @@ if not st.session_state.authenticated:
 else:
     st.success(f"✅ Você está logado como {st.session_state.username}")
     # aqui entra o resto do app (menu, cardápio, etc.)
+
 
 
 
