@@ -145,7 +145,7 @@ def cartao_quarto():
     st.header("Cartão do Quarto")
     
     @st.dialog("Cartão do Quarto")
-    def vote(item):
+    def aproximar(item):
         st.write(f"Aproxime o cartão da fechadura da porta!")
         st.image("Cartao_Aproximacao.png")
         if st.button("Voltar"):
@@ -153,7 +153,7 @@ def cartao_quarto():
 
     st.write("Cartão do seu quarto na palma da sua mão!")
     if st.button("Abrir"):
-        vote("Abrir")
+        aproximar("Abrir")
 
 # -------- FUNÇÃO DE FEEDBACK --------
 def feedback():
