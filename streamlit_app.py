@@ -246,7 +246,7 @@ def pagamento():
             @st.dialog("Verificando Pagamento")
             def aproximar(item):
                 st.write(f"Verificando Pagamento")
-                st.image(src="https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExdmVid3EwZzJyN2o4NW5hOWhjYzlsbTYybmM1ZWYwam1seHJnb2N3ZyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/18u3OnFPamgVOAcoUr/giphy.gif", width="200)
+                st.image("Pix.gif", width="200)
                 for i in range(30):  # 30 x 0.1s = 3 segundos
                 time.sleep(0.1)
                     st.rerun()
@@ -331,6 +331,7 @@ if not st.session_state.authenticated:
 else:
     st.success(f"✅ Você está logado como {st.session_state.username}")
     # aqui entra o resto do app (menu, cardápio, etc.)
+
 
 
 
