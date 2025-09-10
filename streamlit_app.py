@@ -147,7 +147,7 @@ def cartao_quarto():
     @st.dialog("Cartão do Quarto")
     def aproximar(item):
         st.write(f"Aproxime o dispositivo da fechadura da porta!")
-        st.image("Cartao_Aproximacao.png")
+        st.image("assets/Cartao_Aproximacao.png")
         if st.button("Voltar"):
             st.rerun()
 
@@ -231,7 +231,7 @@ def pagamento():
         col1, col2, col3 = st.columns([4, 3, 4])  # A coluna central é 3x maior
         
         with col2:
-            st.image("qrcode_pix.png", caption="Escaneie o QR Code para pagar via Pix", use_container_width=True, width=250)
+            st.image("assets/qrcode_pix.png", caption="Escaneie o QR Code para pagar via Pix", use_container_width=True, width=250)
         
     elif metodo_pagamento == "Boleto":
         cpf = st.text_input("CPF para emissão do boleto")
@@ -246,7 +246,7 @@ def pagamento():
             @st.dialog("Verificando Pagamento")
             def aproximar(item):
                 st.write(f"Verificando Pagamento")
-                st.image("Pix.gif", width="200")
+                st.image("assets/Pix.gif", width="200")
                 for i in range(30):  # 30 x 0.1s = 3 segundos
                     time.sleep(0.1)
                 st.rerun()
@@ -331,6 +331,7 @@ if not st.session_state.authenticated:
 else:
     st.success(f"✅ Você está logado como {st.session_state.username}")
     # aqui entra o resto do app (menu, cardápio, etc.)
+
 
 
 
