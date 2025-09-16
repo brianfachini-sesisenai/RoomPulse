@@ -1,4 +1,4 @@
-# auth.py (versão com correção de formato de dados)
+# auth.py (versão com correção do método .execute)
 import streamlit as st
 from datetime import datetime
 import pandas as pd
@@ -49,18 +49,19 @@ def registrar_novo_usuario(username, password):
         if len(df_todos_nao_admin) >= MAX_USERS:
             usuario_para_remover = df_todos_nao_admin.iloc[0]['username']
             st.toast(f"Limite atingido. Removendo usuário mais antigo: '{usuario_para_remover}'...")
-            # CORREÇÃO AQUI: Passando os parâmetros como um dicionário
-            conn.execute("DELETE FROM usuarios WHERE username = :username;", params={"username": usuario_para_remover})
+            # CORREÇÃO AQUI: Trocando .execute() por .query()
+            conn.query("DELETE FROM usuarios WHERE username = :username;", params={"username": usuario_para_remover}, ttl=0)
 
         # INSERE O NOVO USUÁRIO
-        # CORREÇÃO AQUI: Passando os parâmetros como um dicionário
-        conn.execute(
+        # CORREÇÃO AQUI: Trocando .execute() por .query()
+        conn.query(
             "INSERT INTO usuarios (username, senha, criado_em) VALUES (:username, :senha, :criado_em);",
             params={
                 "username": username,
                 "senha": password,
                 "criado_em": datetime.now()
-            }
+            },
+            ttl=0 # ttl=0 garante que a operação de escrita não seja cacheada e seja executada imediatamente
         )
         
         return "Sucesso: Usuário cadastrado com sucesso!"
