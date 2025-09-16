@@ -1,93 +1,72 @@
-# auth.py
-import json
-import os
+# auth.py (versão final para banco de dados)
+import streamlit as st
 from datetime import datetime
+import pandas as pd
 
 # --- CONSTANTES ---
-USUARIOS_FILE = "data/usuarios.json"
-MAX_USERS = 50 # Limite de 50 usuários + 1 admin
+MAX_USERS = 50
 
-# --- FUNÇÕES DE ACESSO AO ARQUIVO (você substituirá isso pela conexão com o banco de dados) ---
+# --- FUNÇÕES DE ACESSO AO BANCO DE DADOS ---
 
-def carregar_usuarios():
-    """Carrega usuários. Garante que o admin sempre exista."""
-    if not os.path.exists(USUARIOS_FILE):
-        # Se o arquivo não existe, cria com o admin
-        admin_user = {
-            "admin": {
-                "senha": "admin",
-                "criado_em": datetime.now().isoformat()
-            }
-        }
-        with open(USUARIOS_FILE, "w", encoding="utf-8") as f:
-            json.dump(admin_user, f, indent=4)
-        return admin_user
-    
-    try:
-        with open(USUARIOS_FILE, "r", encoding="utf-8") as f:
-            usuarios = json.load(f)
-        
-        # Garante que o admin exista e não seja sobrescrito
-        if "admin" not in usuarios:
-            usuarios["admin"] = {
-                "senha": "admin",
-                "criado_em": datetime.now().isoformat()
-            }
-            salvar_usuarios(usuarios)
-            
-        return usuarios
-    except (json.JSONDecodeError, FileNotFoundError):
-        return {} # Retorna vazio em caso de erro
-
-def salvar_usuarios(usuarios):
-    """Salva os usuários no arquivo."""
-    with open(USUARIOS_FILE, "w", encoding="utf-8") as f:
-        json.dump(usuarios, f, ensure_ascii=False, indent=4)
+def get_db_connection():
+    """Retorna uma conexão com o banco de dados do Supabase."""
+    return st.connection("supabase_db", type="sql")
 
 # --- LÓGICA DE LOGIN E CADASTRO ---
 
 def verificar_login(username, password):
-    """Verifica as credenciais do usuário."""
-    usuarios = carregar_usuarios()
-    user_data = usuarios.get(username)
-    if user_data and user_data["senha"] == password:
-        return True
-    return False
+    """Verifica as credenciais do usuário consultando o banco de dados."""
+    try:
+        conn = get_db_connection()
+        # Busca apenas o usuário específico em vez de carregar a tabela inteira
+        df = conn.query("SELECT senha FROM usuarios WHERE username = %s;", params=(username,), ttl=0)
+        
+        if df.empty:
+            return False # Usuário não encontrado
+            
+        senha_no_banco = df.iloc[0]['senha']
+        return senha_no_banco == password
+    except Exception as e:
+        st.error(f"Erro ao verificar login: {e}")
+        return False
 
 def registrar_novo_usuario(username, password):
-    """Registra um novo usuário com sistema de limite e rotação."""
+    """Registra um novo usuário no banco de dados com tratamento de erros."""
     if not username or not password:
         return "Erro: Nome de usuário e senha não podem estar vazios."
     
-    if username == "admin":
+    if username.lower() == "admin":
         return "Erro: Nome de usuário 'admin' é reservado."
 
-    usuarios = carregar_usuarios()
-
-    if username in usuarios:
-        return "Erro: Nome de usuário já existe."
-
-    # Lógica de Rotação (FIFO)
-    # A contagem total de usuários não-admin
-    non_admin_users = {u: d for u, d in usuarios.items() if u != "admin"}
-
-    if len(non_admin_users) >= MAX_USERS:
-        # Encontra o usuário mais antigo (que não seja o admin)
-        # O mais antigo é o que tem o timestamp de 'criado_em' menor
-        usuario_mais_antigo = min(
-            non_admin_users.items(), 
-            key=lambda item: item[1]["criado_em"]
-        )[0] # Pega a chave (nome do usuário)
-        
-        # Remove o usuário mais antigo
-        del usuarios[usuario_mais_antigo]
-        print(f"Limite atingido. Usuário mais antigo '{usuario_mais_antigo}' foi removido.")
-
-    # Adiciona o novo usuário
-    usuarios[username] = {
-        "senha": password,
-        "criado_em": datetime.now().isoformat()
-    }
+    conn = get_db_connection()
     
-    salvar_usuarios(usuarios)
-    return "Sucesso: Usuário cadastrado com sucesso!"
+    try:
+        # 1. VERIFICA SE O USUÁRIO JÁ EXISTE
+        df_existente = conn.query("SELECT * FROM usuarios WHERE username = %s;", params=(username,), ttl=0)
+        if not df_existente.empty:
+            return "Erro: Nome de usuário já existe."
+
+        # 2. APLICA A LÓGICA DE ROTAÇÃO (SE NECESSÁRIO)
+        df_todos_nao_admin = conn.query("SELECT username, criado_em FROM usuarios WHERE username != 'admin' ORDER BY criado_em ASC;", ttl=0)
+        
+        if len(df_todos_nao_admin) >= MAX_USERS:
+            usuario_para_remover = df_todos_nao_admin.iloc[0]['username']
+            st.toast(f"Limite atingido. Removendo usuário mais antigo: '{usuario_para_remover}'...")
+            conn.execute("DELETE FROM usuarios WHERE username = %s;", params=(usuario_para_remover,))
+
+        # 3. INSERE O NOVO USUÁRIO
+        conn.execute(
+            "INSERT INTO usuarios (username, senha, criado_em) VALUES (%s, %s, %s);",
+            params=(username, password, datetime.now())
+        )
+        
+        return "Sucesso: Usuário cadastrado com sucesso!"
+
+    except Exception as e:
+        error_message = str(e)
+        print(f"ERRO DE BANCO DE DADOS: {error_message}") # Imprime no terminal
+        
+        if "permission denied" in error_message:
+            return "Erro: Falha de permissão ao tentar escrever no banco de dados. Verifique as políticas da tabela no Supabase."
+        else:
+            return f"Erro inesperado no banco de dados: {error_message}"
