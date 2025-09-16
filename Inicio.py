@@ -1,6 +1,7 @@
-# Inicio.py (versão com painel de admin)
+# Inicio.py (versão com painel de admin interativo)
 import streamlit as st
 import auth 
+import pandas as pd
 
 # --- CONFIGURAÇÕES DA PÁGINA ---
 st.set_page_config(
@@ -73,38 +74,70 @@ else:
     st.sidebar.success(f"Logado como: {st.session_state.username}")
 
     # --- NOVA SEÇÃO DO PAINEL ADMIN ---
-    # Este bloco só aparece se o usuário logado for 'admin'
     if st.session_state.get("username") == "admin":
         st.sidebar.divider()
         st.sidebar.header("Painel do Admin")
-
-        # Botão para ativar a visualização de usuários
-        if st.sidebar.button("Ver Todos os Usuários"):
-            st.session_state.admin_view = "view_users"
         
-        # Botão para voltar à visualização normal
-        if st.sidebar.button("Ocultar Lista de Usuários"):
-            # Deleta a variável de estado para voltar ao normal
-            if "admin_view" in st.session_state:
-                del st.session_state.admin_view
-            st.rerun()
+        admin_options = ["Página Inicial", "Gerenciar Usuários"]
+        admin_choice = st.sidebar.radio("Navegação Admin", admin_options)
+    else:
+        admin_choice = "Página Inicial"
+
 
     # --- CONTEÚDO DA PÁGINA PRINCIPAL ---
-    # Verifica se a visualização de admin está ativa
-    if st.session_state.get("admin_view") == "view_users":
-        st.subheader("👨‍💼 Lista de Todos os Usuários")
+    if admin_choice == "Gerenciar Usuários":
+        st.subheader("👨‍💼 Gerenciamento de Usuários")
+        
         try:
             conn = auth.get_db_connection()
-            # Busca todos os usuários, exceto o próprio admin, ordenados por data de criação
             todos_usuarios = conn.query("SELECT username, criado_em FROM usuarios WHERE username != 'admin' ORDER BY criado_em DESC;", ttl=0)
-            st.dataframe(todos_usuarios, use_container_width=True)
+            
+            if todos_usuarios.empty:
+                st.warning("Nenhum usuário cadastrado (além do admin).")
+            else:
+                # Cria uma cópia para edição
+                usuarios_editaveis = todos_usuarios.copy()
+                
+                # Adiciona colunas para as ações do admin
+                usuarios_editaveis["nova_senha"] = ""
+                usuarios_editaveis["deletar"] = False
+
+                # Usa o st.data_editor para criar uma tabela interativa
+                edited_df = st.data_editor(
+                    usuarios_editaveis,
+                    column_config={
+                        "username": st.column_config.TextColumn("Usuário (não pode ser alterado)", disabled=True),
+                        "criado_em": st.column_config.DatetimeColumn("Data de Criação", disabled=True),
+                        "nova_senha": st.column_config.TextColumn("Nova Senha (deixe em branco se não for alterar)"),
+                        "deletar": st.column_config.CheckboxColumn("Deletar Usuário?")
+                    },
+                    hide_index=True,
+                    use_container_width=True
+                )
+                
+                if st.button("Salvar Alterações", type="primary"):
+                    for index, row in edited_df.iterrows():
+                        username_to_update = row["username"]
+                        
+                        # Ação de deletar (tem prioridade)
+                        if row["deletar"]:
+                            if auth.delete_user(username_to_update):
+                                st.success(f"Usuário '{username_to_update}' deletado com sucesso!")
+                        
+                        # Ação de modificar senha
+                        elif row["nova_senha"]:
+                            if auth.update_user_password(username_to_update, row["nova_senha"]):
+                                st.success(f"Senha do usuário '{username_to_update}' atualizada com sucesso!")
+                    
+                    st.rerun() # Recarrega a página para mostrar os dados atualizados
+
         except Exception as e:
             st.error(f"Não foi possível carregar os usuários: {e}")
-    else:
-        # Mensagem padrão para todos os usuários (incluindo o admin quando não está vendo a lista)
+            
+    else: # admin_choice == "Página Inicial"
         st.write("### Selecione uma opção na barra lateral para começar.")
 
-    # Botão de Logout na sidebar (sempre visível para quem está logado)
+    # Botão de Logout na sidebar
     st.sidebar.divider()
     if st.sidebar.button("Sair da Conta"):
         for key in st.session_state.keys():
