@@ -1,4 +1,4 @@
-# auth.py (versão com funções de deletar e modificar)
+# auth.py (versão com todas as funções de gerenciamento)
 import streamlit as st
 from datetime import datetime
 import pandas as pd
@@ -44,33 +44,52 @@ def update_user_password(username, new_password):
         st.error(f"Erro ao atualizar senha para {username}: {e}")
         return False
 
+def update_username(old_username, new_username):
+    """Atualiza o nome de um usuário."""
+    if not new_username:
+        return False, "O novo nome de usuário não pode estar vazio."
+    if new_username.lower() == 'admin':
+        return False, "Não é possível renomear um usuário para 'admin'."
+    
+    conn = get_db_connection()
+    try:
+        # Verifica se o novo nome de usuário já existe
+        df_existente = conn.query("SELECT * FROM usuarios WHERE username = :username;", params={"username": new_username}, ttl=0)
+        if not df_existente.empty:
+            return False, f"O nome de usuário '{new_username}' já está em uso."
+        
+        # Se não existe, atualiza
+        with conn.session as s:
+            s.execute(
+                text("UPDATE usuarios SET username = :new_username WHERE username = :old_username;"),
+                params={"new_username": new_username, "old_username": old_username}
+            )
+            s.commit()
+        return True, f"Usuário '{old_username}' renomeado para '{new_username}'."
+    except Exception as e:
+        return False, f"Erro ao renomear usuário: {e}"
+
 # --- LÓGICA DE LOGIN E CADASTRO ---
 
 def verificar_login(username, password):
-    """Verifica as credenciais do usuário (operação de LEITURA)."""
+    """Verifica as credenciais do usuário."""
     try:
         conn = get_db_connection()
         df = conn.query("SELECT senha FROM usuarios WHERE username = :username;", params={"username": username}, ttl=0)
-        
-        if df.empty:
-            return False
-            
-        senha_no_banco = df.iloc[0]['senha']
-        return senha_no_banco == password
+        if df.empty: return False
+        return df.iloc[0]['senha'] == password
     except Exception as e:
         st.error(f"Erro ao verificar login: {e}")
         return False
 
 def registrar_novo_usuario(username, password):
-    """Registra um novo usuário (operações de ESCRITA)."""
+    """Registra um novo usuário."""
     if not username or not password:
         return "Erro: Nome de usuário e senha não podem estar vazios."
-    
     if username.lower() == "admin":
         return "Erro: Nome de usuário 'admin' é reservado."
 
     conn = get_db_connection()
-    
     try:
         df_existente = conn.query("SELECT * FROM usuarios WHERE username = :username;", params={"username": username}, ttl=0)
         if not df_existente.empty:
@@ -86,17 +105,10 @@ def registrar_novo_usuario(username, password):
 
             s.execute(
                 text("INSERT INTO usuarios (username, senha, criado_em) VALUES (:username, :senha, :criado_em);"),
-                params={
-                    "username": username,
-                    "senha": password,
-                    "criado_em": datetime.now()
-                }
+                params={"username": username, "senha": password, "criado_em": datetime.now()}
             )
             s.commit()
-        
         return "Sucesso: Usuário cadastrado com sucesso!"
-
     except Exception as e:
         error_message = str(e)
-        print(f"ERRO DE BANCO DE DADOS: {error_message}")
         return f"Erro inesperado no banco de dados: {error_message}"
