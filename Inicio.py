@@ -1,9 +1,10 @@
-# Inicio.py (versão com redefinição de senha)
+# Inicio.py (versão com correção do set_page_config)
 import streamlit as st
 import auth 
 import pandas as pd
 
 # --- CONFIGURAÇÕES DA PÁGINA ---
+# ESTA É A ÚNICA CHAMADA PERMITIDA E ESTÁ NO LUGAR CORRETO
 st.set_page_config(page_title="Room App", icon="🏨", layout="wide", initial_sidebar_state="collapsed")
 
 # --- INICIALIZAÇÃO DO ESTADO DA SESSÃO ---
@@ -83,6 +84,7 @@ if not st.session_state.authenticated:
         tela_esqueci_senha()
 else:
     # --- INTERFACE PRINCIPAL APÓS LOGIN ---
+    # A LINHA st.set_page_config(...) FOI REMOVIDA DAQUI
     st.title(f"🏨 Room App")
     st.sidebar.success(f"Logado como: {st.session_state.username}")
 
@@ -95,7 +97,6 @@ else:
         admin_choice = "Página Inicial"
 
     if admin_choice == "Gerenciar Usuários":
-        # ... (código do painel de admin continua aqui, sem alterações) ...
         st.subheader("👨‍💼 Gerenciamento de Usuários")
         with st.expander("➕ Criar Novo Usuário"):
             with st.form("create_user_form"):
