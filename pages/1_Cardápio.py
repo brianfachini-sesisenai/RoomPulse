@@ -27,7 +27,7 @@ def render_cardapio():
         st.info("Nenhum cardápio disponível para esta semana.")
         return
 
-    dias_semana = ["Segunda-feira", "Terça-feira", "Quarta-feira", "Quinta-feira", "Sexta-feira", "Sábado", "Domingo"]
+    dias_semana = ["Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado", "Domingo"]
     
     # Garante a ordem correta dos dias e que todos sejam exibidos
     cols = st.columns(len(dias_semana))
